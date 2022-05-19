@@ -25,7 +25,21 @@ const list = {
             tagMain.appendChild(div)
         })
     },
-    servers: () => {}
+    servers: () => {
+        const tagMain = document.getElementById("list-servers")
+        tagMain.innerHTML = ""
+
+        Object.keys(lobby.state.servers).map((i) => {
+            const server = lobby.state.servers[i]
+
+            const option = document.createElement("option")
+
+            option.innerHTML = server.name
+            option.value = server.id
+
+            tagMain.appendChild(option)
+        })
+    }
 }
 
 socket.on("connect", () => {
@@ -34,6 +48,7 @@ socket.on("connect", () => {
     socket.on("setup", (command) => {
         lobby.state = command.state
         list.users()
+        list.servers()
     })
 
     socket.on("user-connected", (command) => {

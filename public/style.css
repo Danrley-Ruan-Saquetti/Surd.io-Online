@@ -14,7 +14,8 @@ body {
     font-size: 1.6rem;
 }
 input,
-button {
+button,
+select {
     border: none;
     outline: none;
 }
