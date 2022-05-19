@@ -32,4 +32,10 @@ app.use(express.static("public"))
 
 server.listen(port, () => {
     console.log(`Console: Server running on port ${port}!`)
+
+    lobby.servers.createServer({ id: null, name: "Servidor A" })
+    lobby.servers.createServer({ id: null, name: "Servidor B" })
+    lobby.servers.createServer({ id: null, name: "Servidor C" })
+    lobby.servers.createServer({ id: null, name: "Servidor D" })
+    lobby.servers.createServer({ id: null, name: "Servidor E" })
 })

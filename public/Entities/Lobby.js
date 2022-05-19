@@ -1,10 +1,13 @@
+import createControllerServers from "./Servers.js"
 import createControllerUsers from "./Users.js"
 
 export default function createControllerLobby() {
+    const serversM = createControllerServers()
     const usersM = createControllerUsers()
 
     const state = {
-        users: usersM.users
+        servers: serversM.servers,
+        users: usersM.users,
     }
 
     return {
@@ -12,6 +15,10 @@ export default function createControllerLobby() {
         users: {
             createUser: usersM.createUser,
             removeUser: usersM.removeUser
+        },
+        servers: {
+            createServer: serversM.createServer,
+            removeServer: serversM.removeServer
         }
     }
 }
