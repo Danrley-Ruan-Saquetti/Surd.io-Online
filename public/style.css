@@ -1,0 +1,104 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html {
+    font-size: 62.5%;
+}
+body {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    font-size: 1.6rem;
+}
+input,
+button {
+    border: none;
+    outline: none;
+}
+button:hover {
+    cursor: pointer;
+}
+a {
+    text-decoration: none;
+}
+
+/* UI */
+
+#ui {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: black;
+    z-index: 5;
+}
+#ui section {
+    padding: 1.5rem;
+    width: 30vw;
+    max-height: 60vh;
+    background-color: white;
+    border-radius: 1.5rem;
+    z-index: 10;
+}
+.content-info {
+    position: relative;
+}
+#users-connected,
+#chat-lobby {
+    overflow: auto;
+}
+
+/* Menu */
+
+#menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    margin: 0 2rem 0 2rem;
+    z-index: 50;
+}
+
+/* Username */
+
+#menu #username {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#menu #username label {
+    margin-right: 1.5rem;
+}
+
+/* Users */
+
+
+/* Posts */
+
+#list-posts {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Server */
+
+.servers {
+    background-color: rgba(0, 0, 0, .2);
+}
+.servers:hover {
+    cursor: pointer;
+}
+
+/* RENDERER - GAME */
+
+#canvas {
+    position: absolute;
+    z-index: 1;
+}

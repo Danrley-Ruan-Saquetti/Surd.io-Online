@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Surd.io Online</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+    <main id="ui">
+        <section id="users-connected">
+            <div id="content-users" class="content-info"><span>Lista de Usuários</span></div>
+            <div id="list-users"></div>
+        </section>
+
+        <section id="menu">
+            <div id="username">
+                <label for="name-tag">Nome:</label>
+                <input type="text" name="nick-game" id="name-tag" placeholder="Username">
+            </div>
+            <div id="server-select">
+                <label for="servers">Escolha um server</label>
+
+                <select name="server" id="servers"></select>
+            </div>
+            <button type="submit" title="Enter Game">Começar jogo!</button>
+        </section>
+
+        <section id="chat-lobby">
+            <div id="content-posts" class="content-info"><span>Chat Online</span></div>
+            <div id="list-posts"></div>
+        </section>
+    </main>
+
+    <div class="renderer-game">
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <script src="script.js" type="module"></script>
+</body>
+
+</html>
