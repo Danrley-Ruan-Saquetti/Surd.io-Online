@@ -1,12 +1,19 @@
 import createControllerLobby from "./Entities/Lobby.js"
+import createControllerInputListener from "./InputListener.js"
 
 const socket = io()
 
 const lobby = createControllerLobby()
 
+const nameTag = document.getElementById("name-tag")
+
 let userId
 
 const list = {
+    ui: () => {
+        const tagMain = nameTag
+        tagMain.value = lobby.state.users[userId].name
+    },
     users: () => {
         const tagMain = document.getElementById("list-users")
         tagMain.innerHTML = ""
@@ -45,10 +52,17 @@ const list = {
 socket.on("connect", () => {
     userId = socket.id
 
+    const inputListener = createControllerInputListener(userId)
+
+    inputListener.registerObserver((command) => {
+        socket.emit(command.type, command)
+    })
+
     socket.on("setup", (command) => {
         lobby.state = command.state
         list.users()
         list.servers()
+        list.ui()
     })
 
     socket.on("user-connected", (command) => {
@@ -60,4 +74,17 @@ socket.on("connect", () => {
         lobby.state.users = command.users
         list.users()
     })
+
+    socket.on("rename-user", (command) => {
+        lobby.state.users[command.userId].name = command.name
+        list.users()
+    })
 })
+
+window.onload = () => {
+    nameTag.addEventListener("focusout", () => {
+        if (String(nameTag.value) == "") {
+            nameTag.value = lobby.state.users[userId].name
+        }
+    })
+}

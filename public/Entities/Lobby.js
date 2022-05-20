@@ -14,7 +14,8 @@ export default function createControllerLobby() {
         state,
         users: {
             createUser: usersM.createUser,
-            removeUser: usersM.removeUser
+            removeUser: usersM.removeUser,
+            renameUser: usersM.renameUser
         },
         servers: {
             createServer: serversM.createServer,

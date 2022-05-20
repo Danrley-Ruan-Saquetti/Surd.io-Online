@@ -14,7 +14,7 @@ sockets.on("connection", (socket) => {
     const userId = socket.id
     console.log(`Console: User ${userId} connected!`);
 
-    lobby.users.createUser({ id: userId })
+    lobby.users.createUser({ userId: userId })
 
     socket.emit("setup", { state: lobby.state })
 
@@ -22,9 +22,15 @@ sockets.on("connection", (socket) => {
 
     socket.on("disconnect", () => {
         console.log(`Console: User ${userId} disconnected!`);
-        lobby.users.removeUser({ id: userId })
+        lobby.users.removeUser({ userId: userId })
 
         sockets.emit("user-disconnected", { users: lobby.state.users })
+    })
+
+    socket.on("rename-user", (command) => {
+        lobby.users.renameUser(command)
+
+        sockets.emit("rename-user", { userId: lobby.state.users[command.userId].id, name: lobby.state.users[command.userId].name })
     })
 })
 
