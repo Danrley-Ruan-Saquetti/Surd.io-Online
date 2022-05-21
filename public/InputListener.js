@@ -1,5 +1,10 @@
 export default function createControllerInputListener(userId) {
     const observers = []
+    let user
+
+    const registerUser = (userM) => {
+        user = userM
+    }
 
     const registerObserver = (observerFunction) => {
         observers.push(observerFunction)
@@ -16,7 +21,7 @@ export default function createControllerInputListener(userId) {
 
     function renameUser() {
         const newName = String(document.getElementById("name-tag").value)
-        if (newName != "") {
+        if (newName != "" && user.name != newName) {
             notifyAll({ type: "rename-user", userId, name: newName })
         }
     }
@@ -29,6 +34,7 @@ export default function createControllerInputListener(userId) {
     }
 
     return {
+        registerUser,
         registerObserver
     }
 }

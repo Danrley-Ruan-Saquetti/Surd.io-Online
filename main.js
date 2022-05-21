@@ -1,11 +1,11 @@
 import express from "express"
 import http from "http"
-import socketio from "socket.io"
+import { Server } from "socket.io"
 import createControllerLobby from "./public/Entities/Lobby.js"
 
 const app = express()
 const server = http.createServer(app)
-const sockets = socketio(server)
+const sockets = new Server(server)
 const port = 3000
 
 const lobby = createControllerLobby()

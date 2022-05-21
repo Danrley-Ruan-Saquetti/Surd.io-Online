@@ -61,6 +61,8 @@ socket.on("connect", () => {
 
     socket.on("setup", (command) => {
         lobby.state = command.state
+        inputListener.registerUser(lobby.state.users[userId])
+
         list.users()
         list.servers()
         list.ui()
