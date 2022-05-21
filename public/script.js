@@ -6,6 +6,7 @@ const socket = io()
 const lobby = createControllerLobby()
 
 const nameTag = document.getElementById("name-tag")
+const bodyPost = document.getElementById("body-post")
 
 let userId
 

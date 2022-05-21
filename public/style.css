@@ -15,9 +15,13 @@ body {
 }
 input,
 button,
-select {
+select,
+textarea {
     border: none;
     outline: none;
+}
+textarea {
+    resize: none;
 }
 button:hover {
     cursor: pointer;
@@ -83,9 +87,20 @@ a {
 
 /* Posts */
 
+#fill-text {
+    display: flex;
+}
 #list-posts {
     display: flex;
     flex-direction: column;
+}
+#body-post {
+    width: 80%;
+    height: 3rem;
+}
+#send-post {
+    width: 20%;
+    height: 3rem;
 }
 
 /* Server */

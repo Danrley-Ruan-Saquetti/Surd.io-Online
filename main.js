@@ -28,9 +28,14 @@ sockets.on("connection", (socket) => {
     })
 
     socket.on("rename-user", (command) => {
+        console.log(`Console: ${lobby.state.users[command.userId].name} rename to ${command.name}`);
         lobby.users.renameUser(command)
 
         sockets.emit("rename-user", { userId: lobby.state.users[command.userId].id, name: lobby.state.users[command.userId].name })
+    })
+
+    socket.on("send-post", (command) => {
+
     })
 })
 
