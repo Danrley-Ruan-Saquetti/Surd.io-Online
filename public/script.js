@@ -8,12 +8,12 @@ const lobby = createControllerLobby()
 const nameTag = document.getElementById("name-tag")
 const bodyPost = document.getElementById("body-post")
 
-let userId
+let userCodigo
 
 const list = {
     ui: () => {
         const tagMain = nameTag
-        tagMain.value = lobby.state.users[userId].name
+        tagMain.value = lobby.state.users[userCodigo].name
     },
     users: () => {
         const tagMain = document.getElementById("list-users")
@@ -43,7 +43,7 @@ const list = {
             const option = document.createElement("option")
 
             option.innerHTML = server.name
-            option.value = server.id
+            option.value = server.codigo
 
             tagMain.appendChild(option)
         })
@@ -51,17 +51,16 @@ const list = {
 }
 
 socket.on("connect", () => {
-    userId = socket.id
-
-    const inputListener = createControllerInputListener(userId)
-
-    inputListener.registerObserver((command) => {
-        socket.emit(command.type, command)
-    })
 
     socket.on("setup", (command) => {
         lobby.state = command.state
-        inputListener.registerUser(lobby.state.users[userId])
+        userCodigo = command.codigo
+
+        const inputListener = createControllerInputListener(userCodigo, lobby.state)
+        inputListener.registerObserver((command) => {
+            socket.emit(command.type, command)
+        })
+        inputListener.registerUser(lobby.state.users[userCodigo])
 
         list.users()
         list.servers()
@@ -79,7 +78,7 @@ socket.on("connect", () => {
     })
 
     socket.on("rename-user", (command) => {
-        lobby.state.users[command.userId].name = command.name
+        lobby.state.users[command.userCodigo].name = command.name
         list.users()
     })
 })
@@ -87,7 +86,7 @@ socket.on("connect", () => {
 window.onload = () => {
     nameTag.addEventListener("focusout", () => {
         if (String(nameTag.value) == "") {
-            nameTag.value = lobby.state.users[userId].name
+            nameTag.value = lobby.state.users[userCodigo].name
         }
     })
 }

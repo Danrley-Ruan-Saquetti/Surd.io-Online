@@ -1,4 +1,4 @@
-import generatedId from "../GeneratedId.js"
+import generatedId from "../GeneratedCodigo.js"
 import createControllerPosts from "./Posts.js"
 
 const generateId = generatedId
@@ -9,18 +9,16 @@ export default function createControllerChat() {
     const chats = {}
 
     const createChat = (command) => {
-        command.id = generateId(chats).id
-        console.log(command);
-        chats[command.id] = {
-            id: command.id,
+        command.codigo = generateId(chats).codigo
+        chats[command.codigo] = {
+            codigo: command.codigo,
             where: command.where,
-            posts: {}
+            posts: postsM.posts
         }
-        console.log(chats);
     }
 
     const removeChat = (command) => {
-        delete chats[command.id]
+        delete chats[command.codigo]
     }
 
     return {
@@ -29,7 +27,6 @@ export default function createControllerChat() {
         removeChat,
         posts: {
             createPost: postsM.createPost,
-            removePost: postsM.removePost,
         }
     }
 }

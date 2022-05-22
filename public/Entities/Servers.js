@@ -1,19 +1,19 @@
-import generatedId from "../GeneratedId.js"
+import generatedCodigo from "../GeneratedCodigo.js"
 
-const generateId = generatedId
+const generateCodigo = generatedCodigo
 
 export default function createControllerServers() {
     const servers = {}
 
     const createServer = (command) => {
-        command.id = generateId(servers).id
-        servers[command.id] = {
-            id: command.id,
+        const codigo = generateCodigo(servers).codigo
+        servers[codigo] = {
+            codigo: codigo,
             name: command.name
         }
     }
     const removeServer = (command) => {
-        delete servers[command.id]
+        delete servers[command.codigo]
     }
 
     return {

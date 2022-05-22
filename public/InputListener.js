@@ -1,5 +1,6 @@
-export default function createControllerInputListener(userId) {
+export default function createControllerInputListener(userCodigo, stateM) {
     const observers = []
+    const lobby = stateM
     let user
 
     const registerUser = (userM) => {
@@ -22,14 +23,14 @@ export default function createControllerInputListener(userId) {
     function renameUser() {
         const newName = String(document.getElementById("name-tag").value)
         if (newName != "" && user.name != newName) {
-            notifyAll({ type: "rename-user", userId, name: newName })
+            notifyAll({ type: "rename-user", userCodigo, name: newName })
         }
     }
 
     function sendPost() {
         const bodyPost = String(document.getElementById("body-post").value)
         if (bodyPost != "") {
-            notifyAll({ type: "send-post", userId, bodyPost: bodyPost, where: "lobby" })
+            notifyAll({ type: "send-post", id: null, userCodigo, body: bodyPost, where: lobby.lobbyCodigo })
         }
     }
 

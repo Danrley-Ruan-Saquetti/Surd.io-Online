@@ -1,21 +1,29 @@
+import generatedCodigo from "../GeneratedCodigo.js"
+
+const generateCodigo = generatedCodigo
+
 export default function createControllerUsers() {
     const users = {}
 
     const createUser = (command) => {
-        users[command.userId] = {
-            id: command.userId,
-            name: `User_${command.userId.substr(0, 5)}`,
+        const codigo = generateCodigo(users).codigo
+        users[codigo] = {
+            id: command.id,
+            codigo: codigo,
+            name: `User_${codigo.substring(0, 5)}`,
             serverConnected: null,
             playingGame: false
         }
+
+        return { codigo }
     }
 
     const removeUser = (command) => {
-        delete users[command.userId]
+        delete users[command.codigo]
     }
 
     const renameUser = (command) => {
-        users[command.userId].name = command.name
+        users[command.codigo].name = command.name
     }
 
     return {
