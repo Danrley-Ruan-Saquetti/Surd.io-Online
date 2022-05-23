@@ -1,23 +1,24 @@
-import createControllerLobby from "./Entities/Lobby.js"
-import createControllerInputListener from "./InputListener.js"
+import createLobby from "./Entities/Lobby.js"
 
 const socket = io()
 
-const lobby = createControllerLobby()
-
-const nameTag = document.getElementById("name-tag")
-const bodyPost = document.getElementById("body-post")
+const lobby = createLobby()
 
 let userCodigo
 
+const tags = {
+    nameTag: document.getElementById("name-tag"),
+    listUsers: document.getElementById("list-users"),
+    listServers: document.getElementById("list-servers"),
+    listPosts: document.getElementById("list-posts"),
+}
+
 const list = {
     ui: () => {
-        const tagMain = nameTag
-        tagMain.value = lobby.state.users[userCodigo].name
+        tags.nameTag.value = lobby.state.users[userCodigo].name
     },
     users: () => {
-        const tagMain = document.getElementById("list-users")
-        tagMain.innerHTML = ""
+        tags.listUsers.innerHTML = ""
 
         Object.keys(lobby.state.users).map((i) => {
             const user = lobby.state.users[i]
@@ -28,65 +29,53 @@ const list = {
 
             spanName.innerHTML = user.name
 
+            spanName.class = "name-users"
+            div.id = user.codigo
+            div.className = "users"
+
             p.appendChild(spanName)
             div.appendChild(p)
-            tagMain.appendChild(div)
+            tags.listUsers.appendChild(div)
         })
     },
-    servers: () => {
-        const tagMain = document.getElementById("list-servers")
-        tagMain.innerHTML = ""
+    addUser: (user) => {
+        const div = document.createElement("div")
+        const p = document.createElement("p")
+        const spanName = document.createElement("span")
 
-        Object.keys(lobby.state.servers).map((i) => {
-            const server = lobby.state.servers[i]
+        spanName.innerHTML = user.name
 
-            const option = document.createElement("option")
+        spanName.class = "name-users"
+        div.id = user.codigo
+        div.className = "users"
 
-            option.innerHTML = server.name
-            option.value = server.codigo
-
-            tagMain.appendChild(option)
-        })
-    }
+        p.appendChild(spanName)
+        div.appendChild(p)
+        tags.listUsers.appendChild(div)
+    },
+    removeUser: (user) => {
+        tags.listUsers.removeChild(document.getElementById(user.codigo))
+    },
+    servers: () => {}
 }
 
 socket.on("connect", () => {
-
     socket.on("setup", (command) => {
-        lobby.state = command.state
         userCodigo = command.codigo
-
-        const inputListener = createControllerInputListener(userCodigo, lobby.state)
-        inputListener.registerObserver((command) => {
-            socket.emit(command.type, command)
-        })
-        inputListener.registerUser(lobby.state.users[userCodigo])
-
-        list.users()
-        list.servers()
+        lobby.setup(command)
         list.ui()
-    })
-
-    socket.on("user-connected", (command) => {
-        lobby.state.users = command.users
         list.users()
     })
 
-    socket.on("user-disconnected", (command) => {
-        lobby.state.users = command.users
-        list.users()
+    socket.on("add-user", (command) => {
+        lobby.user.createUser(command)
+        list.addUser(lobby.state.users[command.codigo])
     })
 
-    socket.on("rename-user", (command) => {
-        lobby.state.users[command.userCodigo].name = command.name
-        list.users()
+    socket.on("remove-user", (command) => {
+        list.removeUser(lobby.state.users[command.codigo])
+        lobby.user.removeUser(command)
     })
 })
 
-window.onload = () => {
-    nameTag.addEventListener("focusout", () => {
-        if (String(nameTag.value) == "") {
-            nameTag.value = lobby.state.users[userCodigo].name
-        }
-    })
-}
+window.onload = () => {}

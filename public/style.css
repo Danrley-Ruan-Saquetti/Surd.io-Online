@@ -12,6 +12,7 @@ body {
     height: 100vh;
     overflow: hidden;
     font-size: 1.6rem;
+    background-color: #000;
 }
 input,
 button,
@@ -30,101 +31,50 @@ a {
     text-decoration: none;
 }
 
-/* UI */
+/* +- UI */
 
 #ui {
     display: flex;
-    align-items: center;
     justify-content: center;
-    position: absolute;
+    align-items: center;
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    background-color: black;
-    z-index: 5;
 }
-#ui section {
-    position: relative;
-    padding: 1.5rem;
-    width: 30vw;
-    background-color: white;
-    border-radius: 1.5rem;
-    z-index: 10;
+#menu-content {
+    position: absolute;
+    display: flex;
+    width: 80%;
+    height: 80%;
 }
-.content-info {
+section {
+    display: flex;
+    flex-direction: column;
     position: relative;
+    background-color: #fff;
+    border-radius: 2rem;
+    width: 33.3%;
+    padding: 2rem;
 }
 #users-connected,
 #chat-lobby {
-    overflow-y: auto;
-    overflow-x: hidden;
     height: 100%;
 }
-#menu-content {
-    display: flex;
-    justify-content: space-between;
-    width: 80vw;
-    height: 80vh;
-}
 
-/* Menu */
+/* +-- users-connected */
+
+
+/* +-- menu */
 
 #menu {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 0 .5rem 0 .5rem;
     height: 25%;
+    margin: 0 0.5% 0 0.5%;
 }
 
-/* Username */
-
-#menu #username {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-#menu #username label {
-    margin-right: 1.5rem;
-}
-
-/* Users */
-
-
-/* Posts */
+/* +-- chat-lobby */
 
 #fill-text {
     display: flex;
     position: absolute;
-    bottom: 0;
-}
-#list-posts {
-    display: flex;
-    flex-direction: column;
-}
-#body-post {
-    width: 80%;
-    height: 3rem;
-}
-#send-post {
-    width: 20%;
-    height: 3rem;
-}
-
-/* Server */
-
-.servers {
-    background-color: rgba(0, 0, 0, .2);
-}
-.servers:hover {
-    cursor: pointer;
-}
-
-/* RENDERER - GAME */
-
-#canvas {
-    position: absolute;
-    z-index: 1;
+    bottom: 2rem;
 }
