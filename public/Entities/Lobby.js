@@ -1,53 +1,19 @@
-import createGeneratedCodigo from "../GeneratedCodigo.js"
-import createUsers from "./Users.js"
-
-export default function createLobby() {
-    const userEM = createUsers()
-
-    const observers = []
-
-    const subscribeObserver = (observerFunction) => {
-        observers.push(observerFunction)
+export default class Lobby {
+    constructor() {
+        this.users = {}
     }
 
-    const notifyAll = (command) => {
-        observers.forEach((observerFunction) => {
-            observerFunction(command)
-        })
+    addUser(command) {
+        this.users[command.user.code] = command.user
     }
 
-    const state = {
-        lobbyCodigo: createGeneratedCodigo({}).codigo,
-        users: userEM.users
+    removeUser(command) {
+        delete this.users[command.code]
     }
 
-    const setup = (command) => {
-        Object.keys(command.state.users).map((i) => {
-            user.createUser(command.state.users[i])
-        })
-    }
-
-    const user = {
-        createUser: (command) => {
-            const codigo = userEM.controller.createUser(command).codigo
-            notifyAll({ type: "add-user", codigo, id: command.id })
-
-            return { codigo }
-        },
-        removeUser: (command) => {
-            userEM.controller.removeUser(command)
-            notifyAll({ type: "remove-user", codigo: command.codigo })
-        },
-        renameUser: (command) => {
-            userEM.controller.renameUser(command)
-            notifyAll({ type: "rename-user", codigo: command.codigo, name: command.name })
+    getState() {
+        return {
+            users: this.users
         }
-    }
-
-    return {
-        state,
-        setup,
-        user,
-        subscribeObserver
     }
 }

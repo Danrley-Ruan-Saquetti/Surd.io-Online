@@ -1,10 +1,10 @@
-import createLobby from "./Entities/Lobby.js"
+import controlMain from "./Controllers/ControlMain.js"
 
 const socket = io()
 
-const lobby = createLobby()
+const main = new controlMain()
 
-let userCodigo
+let userCode
 
 const tags = {
     nameTag: document.getElementById("name-tag"),
@@ -13,68 +13,90 @@ const tags = {
     listPosts: document.getElementById("list-posts"),
 }
 
+
+
 const list = {
     ui: () => {
-        tags.nameTag.value = lobby.state.users[userCodigo].name
+        tags.nameTag.value = main.CLobby.getState().users[userCode].name
     },
     users: () => {
+        const users = main.getState().users
         tags.listUsers.innerHTML = ""
 
-        Object.keys(lobby.state.users).map((i) => {
-            const user = lobby.state.users[i]
+        CONTROL_lIST.addElement(tags.listUsers, { spanBody: main.CLobby.getState().users[userCode].name, code: main.CLobby.getState().users[userCode].code })
 
-            const div = document.createElement("div")
-            const p = document.createElement("p")
-            const spanName = document.createElement("span")
+        Object.keys(users).map((u) => {
+            if (users[u].code == userCode) { return }
 
-            spanName.innerHTML = user.name
+            const user = users[u]
 
-            spanName.class = "name-users"
-            div.id = user.codigo
-            div.className = "users"
-
-            p.appendChild(spanName)
-            div.appendChild(p)
-            tags.listUsers.appendChild(div)
+            CONTROL_lIST.addElement(tags.listUsers, { spanBody: user.name, code: user.code })
         })
     },
-    addUser: (user) => {
+    addUser: (command) => {
+        CONTROL_lIST.addElement(tags.listUsers, { spanBody: main.getState().users[command.code].name, code: command.code })
+    },
+    removeUser: (code) => {
+        CONTROL_lIST.removeElement(code)
+    },
+    updateUser: (user) => {
+        updateElement("listUsers", { user })
+    },
+    servers: () => {
+
+    }
+}
+
+const CONTROL_lIST = {
+    addElement: (element, command) => {
         const div = document.createElement("div")
         const p = document.createElement("p")
-        const spanName = document.createElement("span")
+        const span = document.createElement("span")
 
-        spanName.innerHTML = user.name
+        span.innerHTML = command.spanBody
 
-        spanName.class = "name-users"
-        div.id = user.codigo
-        div.className = "users"
+        div.id = command.code
 
-        p.appendChild(spanName)
+        p.appendChild(span)
         div.appendChild(p)
-        tags.listUsers.appendChild(div)
+        element.appendChild(div)
     },
-    removeUser: (user) => {
-        tags.listUsers.removeChild(document.getElementById(user.codigo))
+    removeElement: (id) => {
+        const element = document.getElementById(id)
+        if (!element) { return }
+
+        element.remove()
     },
-    servers: () => {}
+    updateElement: (element, command) => {
+        const tag = tags["listUsers"]
+        if (!tag) { return }
+
+        tag.childNodes.forEach((c) => {
+            if (c.id == command.code) {
+                return
+            }
+        })
+    }
 }
+
 
 socket.on("connect", () => {
     socket.on("setup", (command) => {
-        userCodigo = command.codigo
-        lobby.setup(command)
+        userCode = command.code
+        main.setup(command.state)
         list.ui()
         list.users()
     })
 
-    socket.on("add-user", (command) => {
-        lobby.user.createUser(command)
-        list.addUser(lobby.state.users[command.codigo])
+    socket.on("user-connected", (command) => {
+        if (userCode == command.code) { return }
+        const code = main.createUser(command).code
+        list.addUser(command)
     })
 
-    socket.on("remove-user", (command) => {
-        list.removeUser(lobby.state.users[command.codigo])
-        lobby.user.removeUser(command)
+    socket.on("user-disconnected", (command) => {
+        main.removeUser(command)
+        list.removeUser(command.code)
     })
 })
 
