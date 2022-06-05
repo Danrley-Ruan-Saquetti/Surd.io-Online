@@ -1,10 +1,12 @@
-import controlLobby from "./ControlLobby.js"
-import controlUser from "./ControlUser.js"
+import ControlLobby from "./ControlLobby.js"
+import ControlServer from "./ControlServer.js"
+import ControlUser from "./ControlUser.js"
 
-export default class controlMain {
+export default class ControlMain {
     constructor() {
-        this.controlLobby = new controlLobby()
-        this.controlUser = new controlUser()
+        this.controlLobby = new ControlLobby()
+        this.controlUser = new ControlUser()
+        this.controlServer = new ControlServer()
         this.observers = []
     }
 
@@ -34,6 +36,17 @@ export default class controlMain {
         this.controlLobby.renameUser(command)
     }
 
+    createServer(command) {
+        const server = this.controlServer.createServer(command, this.getState().servers)
+        this.controlLobby.addServer({ server })
+
+        return { code: server.code }
+    }
+
+    removeServer(command) {
+        this.controlLobby.removeServer(command)
+    }
+
     getState() {
         return this.controlLobby.getState()
     }
@@ -41,6 +54,9 @@ export default class controlMain {
     setup(command) {
         Object.keys(command.users).map((u) => {
             this.createUser(command.users[u])
+        })
+        Object.keys(command.servers).map((s) => {
+            this.createServer(command.servers[s])
         })
     }
 }

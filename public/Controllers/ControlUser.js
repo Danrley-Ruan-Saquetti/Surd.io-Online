@@ -1,6 +1,6 @@
 import User from "../Entities/User.js"
 
-export default class controlUser {
+export default class ControlUser {
     constructor() {}
 
     createUser(command, users) {

@@ -1,6 +1,7 @@
 export default class Lobby {
     constructor() {
         this.users = {}
+        this.servers = {}
     }
 
     addUser(command) {
@@ -11,9 +12,18 @@ export default class Lobby {
         delete this.users[command.code]
     }
 
+    addServer(command) {
+        this.servers[command.server.code] = command.server
+    }
+
+    removeServer(command) {
+        delete this.servers[command.code]
+    }
+
     getState() {
         return {
-            users: this.users
+            users: this.users,
+            servers: this.servers
         }
     }
 }

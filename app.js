@@ -1,19 +1,30 @@
 import express from "express"
 import http from "http"
 import { Server } from "socket.io"
-import controlMain from "./public/Controllers/ControlMain.js"
+import ControlMain from "./public/Controllers/ControlMain.js"
 
 const app = express()
 const server = http.createServer(app)
 const sockets = new Server(server)
 const port = 3000
 
-const main = new controlMain()
+const main = new ControlMain()
 
 app.use(express.static("public"))
 
 server.listen(port, () => {
     console.log(`Console: Server running on port ${port}!`)
+
+    const serverACode = main.createServer({ initial: "A" }).code
+    console.log(`Console: Server ${serverACode} created!`)
+    const serverBCode = main.createServer({ initial: "B" }).code
+    console.log(`Console: Server ${serverBCode} created!`)
+    const serverCCode = main.createServer({ initial: "C" }).code
+    console.log(`Console: Server ${serverCCode} created!`)
+    const serverDCode = main.createServer({ initial: "D" }).code
+    console.log(`Console: Server ${serverDCode} created!`)
+    const serverECode = main.createServer({ initial: "E" }).code
+    console.log(`Console: Server ${serverECode} created!`)
 
     main.subscribeObserver((command) => {
         sockets.emit(command.type, command)

@@ -1,6 +1,6 @@
 import Lobby from "../Entities/Lobby.js"
 
-export default class controlLobby {
+export default class ControlLobby {
     constructor() {
         this.lobby = new Lobby()
     }
@@ -15,6 +15,14 @@ export default class controlLobby {
 
     renameUser(command) {
         this.lobby.users[command.user.code].name = command.newName
+    }
+
+    addServer(command) {
+        this.lobby.addServer({ server: command.server })
+    }
+
+    removeServer(command) {
+        this.lobby.removeServer(command)
     }
 
     getState() {

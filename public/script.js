@@ -1,9 +1,9 @@
 import ControlInputListener from "./Controllers/ControlInputListener.js"
-import controlMain from "./Controllers/ControlMain.js"
+import ControlMain from "./Controllers/ControlMain.js"
 
 const socket = io()
 
-const main = new controlMain()
+const main = new ControlMain()
 const controlInputListener = new ControlInputListener(main)
 
 let userCode
