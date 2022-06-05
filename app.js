@@ -14,6 +14,10 @@ app.use(express.static("public"))
 
 server.listen(port, () => {
     console.log(`Console: Server running on port ${port}!`)
+
+    main.subscribeObserver((command) => {
+        sockets.emit(command.type, command)
+    })
 })
 
 sockets.on("connection", (socket) => {
@@ -30,5 +34,11 @@ sockets.on("connection", (socket) => {
         console.log(`Console: User ${userId} disconnected!`);
         sockets.emit("user-disconnected", { code })
         main.removeUser({ code })
+    })
+
+    socket.on("user-rename", (command) => {
+        console.log(`Console: User ${userId} rename ${command.user.name} to ${command.newName}`);
+        sockets.emit("user-rename", command)
+        main.renameUser(command)
     })
 })

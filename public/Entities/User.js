@@ -14,10 +14,6 @@ export default class User {
         this.playingGame = playingGame
     }
 
-    renameUser(command) {
-        this.name = command.name
-    }
-
     changeServer(command) {
         this.serverConnected = command.serverId
     }

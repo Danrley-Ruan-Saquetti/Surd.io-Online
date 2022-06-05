@@ -3,27 +3,39 @@ import controlUser from "./ControlUser.js"
 
 export default class controlMain {
     constructor() {
-        this.CLobby = new controlLobby()
-        this.CUser = new controlUser()
+        this.controlLobby = new controlLobby()
+        this.controlUser = new controlUser()
+        this.observers = []
+    }
+
+    subscribeObserver(observerFunction) {
+        this.observers.push(observerFunction)
+    }
+
+    notifyAll(command) {
+        this.observers.forEach((observerFunction) => {
+            observerFunction(command)
+        })
     }
 
     createUser(command) {
-        const user = this.CUser.createUser(command, this.getState().users)
-        this.CLobby.addUser({ user })
+        const user = this.controlUser.createUser(command, this.getState().users)
+        this.controlLobby.addUser({ user })
 
         return { code: user.code }
     }
 
     removeUser(command) {
-        this.CLobby.removeUser(command)
+        this.controlLobby.removeUser(command)
     }
 
     renameUser(command) {
-        this.CUser.renameUser(command)
+        this.controlUser.renameUser(command)
+        this.controlLobby.renameUser(command)
     }
 
     getState() {
-        return this.CLobby.getState()
+        return this.controlLobby.getState()
     }
 
     setup(command) {

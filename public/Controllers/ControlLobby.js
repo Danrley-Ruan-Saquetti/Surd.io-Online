@@ -13,6 +13,10 @@ export default class controlLobby {
         this.lobby.removeUser(command)
     }
 
+    renameUser(command) {
+        this.lobby.users[command.user.code].name = command.newName
+    }
+
     getState() {
         return this.lobby.getState()
     }
