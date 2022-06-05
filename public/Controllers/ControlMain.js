@@ -36,6 +36,11 @@ export default class ControlMain {
         this.controlLobby.renameUser(command)
     }
 
+    changeServerUser(command) {
+        this.controlUser.changeServer(command)
+        this.controlLobby.changeServerUser(command)
+    }
+
     createServer(command) {
         const server = this.controlServer.createServer(command, this.getState().servers)
         this.controlLobby.addServer({ server })

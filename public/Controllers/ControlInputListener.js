@@ -27,6 +27,7 @@ export default class ControlInputListener {
                 document.getElementById("name-tag").value = this.user.name
             }
         })
+        document.getElementById("start-game").addEventListener("click", (ev) => this.startGame())
     }
 
     renameUser() {
@@ -39,5 +40,14 @@ export default class ControlInputListener {
         }
 
         this.notifyAll({ type: "user-rename", newName, user: this.user })
+    }
+
+    startGame() {
+        const serverSelected = String(document.getElementById("list-servers").value)
+        this.changeServer(serverSelected.substring(7))
+    }
+
+    changeServer(serverInitial) {
+        this.notifyAll({ type: "user-changeServer", serverInitial, user: this.user })
     }
 }

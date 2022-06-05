@@ -17,6 +17,10 @@ export default class ControlLobby {
         this.lobby.users[command.user.code].name = command.newName
     }
 
+    changeServerUser(command) {
+        this.lobby.users[command.user.code].serverConnected = command.serverInitial
+    }
+
     addServer(command) {
         this.lobby.addServer({ server: command.server })
     }

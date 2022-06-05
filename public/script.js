@@ -13,6 +13,7 @@ const tags = {
     listUsers: document.getElementById("list-users"),
     listServers: document.getElementById("list-servers"),
     listPosts: document.getElementById("list-posts"),
+    startGame: document.getElementById("start-game"),
 }
 
 const list = {
@@ -115,6 +116,10 @@ socket.on("connect", () => {
     socket.on("user-rename", (command) => {
         main.renameUser(command)
         list.updateUser({ user: command.user })
+    })
+
+    socket.on("user-changeServer", (command) => {
+        main.changeServerUser(command)
     })
 })
 

@@ -44,8 +44,16 @@ sockets.on("connection", (socket) => {
     })
 
     socket.on("user-rename", (command) => {
-        console.log(`Console: User ${userId} rename ${command.user.name} to ${command.newName}`);
+        console.log(`Console: User ${userId} rename from ${command.user.name} to ${command.newName}`);
         sockets.emit("user-rename", command)
         main.renameUser(command)
+    })
+
+    socket.on("user-changeServer", (command) => {
+        console.log(`Console: User ${userId} change server from ${command.user.serverConnected} to ${command.serverInitial}`);
+        const serverCode = main.getState().servers[command.serverInitial].code
+
+        sockets.emit("user-changeServer", command)
+        main.changeServerUser(command)
     })
 })

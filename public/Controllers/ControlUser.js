@@ -10,4 +10,8 @@ export default class ControlUser {
     renameUser(command) {
         command.user.name = command.newName
     }
+
+    changeServer(command) {
+        command.user.serverConnected = command.serverInitial
+    }
 }

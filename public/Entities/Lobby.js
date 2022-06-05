@@ -13,7 +13,7 @@ export default class Lobby {
     }
 
     addServer(command) {
-        this.servers[command.server.code] = command.server
+        this.servers[command.server.initial] = command.server
     }
 
     removeServer(command) {
