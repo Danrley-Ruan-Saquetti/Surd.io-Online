@@ -43,7 +43,18 @@ const list = {
         CONTROL_lIST.updateElement(`user-name-${command.user.code}`, { txtUpdate: command.user.name })
     },
     servers: () => {
+        tags.listServers.innerHTML = ""
 
+        Object.keys(main.getState().servers).map((s) => {
+            const server = main.getState().servers[s]
+
+            const option = document.createElement("option")
+
+            option.innerHTML = server.name
+            option.value = `server-${server.initial}`
+
+            tags.listServers.appendChild(option)
+        })
     }
 }
 
@@ -82,6 +93,7 @@ socket.on("connect", () => {
         main.setup(command.state)
         list.ui()
         list.users()
+        list.servers()
 
         controlInputListener.registerUser(main.getState().users[userCode])
         controlInputListener.registerObserver((command) => {

@@ -15,16 +15,12 @@ app.use(express.static("public"))
 server.listen(port, () => {
     console.log(`Console: Server running on port ${port}!`)
 
-    const serverACode = main.createServer({ initial: "A" }).code
-    console.log(`Console: Server ${serverACode} created!`)
-    const serverBCode = main.createServer({ initial: "B" }).code
-    console.log(`Console: Server ${serverBCode} created!`)
-    const serverCCode = main.createServer({ initial: "C" }).code
-    console.log(`Console: Server ${serverCCode} created!`)
-    const serverDCode = main.createServer({ initial: "D" }).code
-    console.log(`Console: Server ${serverDCode} created!`)
-    const serverECode = main.createServer({ initial: "E" }).code
-    console.log(`Console: Server ${serverECode} created!`)
+    const INITIALS = ["A", "B", "C", "D", "E"]
+
+    INITIALS.forEach((initial) => {
+        const serverCode = main.createServer({ initial: initial }).code
+        console.log(`Console: Server ${serverCode} created!`)
+    })
 
     main.subscribeObserver((command) => {
         sockets.emit(command.type, command)
