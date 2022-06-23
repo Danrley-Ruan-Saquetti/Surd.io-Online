@@ -1,12 +1,15 @@
 const LENGTH_CODE = 10
 
-export default function generatedCode(T) {
+export default function GeneratedCode(T) {
     const VALID_CODE = (code) => {
+        let _validCode = true
+
         Object.keys(T).map((t) => {
-            if (T[t].code == code) { return false }
+            if (!_validCode) { return }
+            if (T[t].code == code) { _validCode = false }
         })
 
-        return true
+        return _validCode
     }
 
     const CHARACTERS = "0123456789"

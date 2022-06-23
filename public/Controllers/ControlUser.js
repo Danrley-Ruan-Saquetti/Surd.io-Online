@@ -1,17 +1,45 @@
-import User from "../Entities/User.js"
+import StateUser from "../Models/StateUser.js"
+import GeneratedCode from "./GeneratedCode.js"
 
-export default class ControlUser {
-    constructor() {}
+export default function ControlUser() {
+    const controlStateUser = StateUser()
 
-    createUser(command, users) {
-        return new User(command, users)
+    const createUser = (command, users = {}) => {
+        const code = command.code ? command.code : GeneratedCode(users).code
+        const user = {
+            id: command.id,
+            code: code,
+            name: command.name ? command.name : `Guest_${code.substring(0, 5)}`,
+            serverConnected: command.serverConnected ? command.serverConnected : null,
+            playingGame: command.playingGame ? command.playingGame : false,
+        }
+
+        controlStateUser.createUser(user)
+
+        return { code }
     }
 
-    renameUser(command) {
-        command.user.name = command.newName
+    const removeUser = (command) => {
+        controlStateUser.removeUser(command)
     }
 
-    changeServer(command) {
-        command.user.serverConnected = command.serverInitial
+    const renameUser = (command) => {
+        controlStateUser.renameUser(command)
+    }
+
+    const changeServer = (command) => {
+        controlStateUser.changeServer(command)
+    }
+
+    const getUsers = () => {
+        return controlStateUser.users
+    }
+
+    return {
+        createUser,
+        removeUser,
+        renameUser,
+        changeServer,
+        getUsers,
     }
 }

@@ -8,52 +8,41 @@ const server = http.createServer(app)
 const sockets = new Server(server)
 const port = 3000
 
-const main = new ControlMain()
+const controlMain = ControlMain()
 
 app.use(express.static("public"))
 
 server.listen(port, () => {
     console.log(`Console: Server running on port ${port}!`)
 
-    const INITIALS = ["A", "B", "C", "D", "E"]
-
-    INITIALS.forEach((initial) => {
-        const serverCode = main.createServer({ initial: initial }).code
-        console.log(`Console: Server ${serverCode} created!`)
-    })
-
-    main.subscribeObserver((command) => {
-        sockets.emit(command.type, command)
+    controlMain.subscribeObserver((type, command) => {
+        sockets.emit(type, command)
     })
 })
 
 sockets.on("connection", (socket) => {
-    const userId = socket.id
-    console.log(`Console: User ${userId} connected!`);
+    const id = socket.id
+    console.log(`Console: User ${id} connected!`);
 
-    const code = main.createUser({ id: userId }).code
+    const code = controlMain.createUser({ id }).code
 
-    socket.emit("setup", { state: main.getState(), code })
-
-    sockets.emit("user-connected", { id: userId, code })
+    socket.emit("setup", { state: controlMain.getState(), code })
 
     socket.on("disconnect", () => {
-        console.log(`Console: User ${userId} disconnected!`);
-        sockets.emit("user-disconnected", { code })
-        main.removeUser({ code })
+        console.log(`Console: User ${id} disconnected!`);
+
+        controlMain.removeUser({ code })
     })
 
     socket.on("user-rename", (command) => {
-        console.log(`Console: User ${userId} rename from ${command.user.name} to ${command.newName}`);
-        sockets.emit("user-rename", command)
-        main.renameUser(command)
+        console.log(`Console: User ${id} rename ${controlMain.getState().users[code].name} to ${command.newName}`);
+
+        controlMain.renameUser(command)
     })
 
-    socket.on("user-changeServer", (command) => {
-        console.log(`Console: User ${userId} change server from ${command.user.serverConnected} to ${command.serverInitial}`);
-        const serverCode = main.getState().servers[command.serverInitial].code
+    socket.on("user-change-server", (command) => {
+        console.log(`Console: User ${id} change server ${controlMain.getState().users[code].serverConnected} to server ${command.newServer}`)
 
-        sockets.emit("user-changeServer", command)
-        main.changeServerUser(command)
+        controlMain.changeServerUser(command)
     })
 })

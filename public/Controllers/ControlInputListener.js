@@ -1,53 +1,74 @@
-export default class ControlInputListener {
-    constructor(main) {
-        this.main = main
-        this.user = null
-        this.initialComponents()
-        this.observers = []
+const TAGS = {
+    nameTag: document.getElementById("name-tag"),
+    renameUser: document.getElementById("rename-user"),
+    listServer: document.getElementById("list-servers"),
+    startGame: document.getElementById("start-game"),
+    bodyPost: document.getElementById("body-post"),
+    sendPost: document.getElementById("send-post"),
+}
+
+export default function ControlInputListener() {
+    const user = {
+        code: null,
+        name: () => { return "" }
     }
 
-    registerObserver(observerFunction) {
-        this.observers.push(observerFunction)
+    const observers = []
+
+    const subscribeObserver = (observerFunction) => {
+        observers.push(observerFunction)
     }
 
-    notifyAll(command) {
-        this.observers.forEach((observerFunction) => {
-            observerFunction(command)
+    const notifyAll = (type, command) => {
+        observers.forEach((observerFunction) => {
+            observerFunction(type, command)
         })
     }
 
-    registerUser(code) {
-        this.user = code
+    const registerUser = (command) => {
+        user.code = command.code
+        user.name = command.getName
     }
 
-    initialComponents() {
-        document.getElementById("rename-user").addEventListener("click", (ev) => this.renameUser())
-        document.getElementById("name-tag").addEventListener("focusout", (ev) => {
-            if (String(document.getElementById("name-tag").value) == "") {
-                document.getElementById("name-tag").value = this.user.name
+    const initialComponents = () => {
+        TAGS.renameUser.addEventListener("click", (ev) => renameUser())
+        TAGS.sendPost.addEventListener("click", (ev) => sendPost())
+        TAGS.startGame.addEventListener("click", (ev) => startGame())
+        TAGS.nameTag.addEventListener("focusout", (ev) => {
+            const newName = String(TAGS.nameTag.value)
+            if (newName == "") {
+                TAGS.nameTag.value = user.name()
             }
         })
-        document.getElementById("start-game").addEventListener("click", (ev) => this.startGame())
     }
 
-    renameUser() {
-        const newName = String(document.getElementById("name-tag").value)
+    const sendPost = () => {
 
-        if (newName == this.user.name) { return }
+    }
+
+    const renameUser = () => {
+        const newName = String(TAGS.nameTag.value)
         if (newName == "") {
-            alert("Insira um nome pro Usuário!")
+            TAGS.nameTag.value = user.name()
             return
         }
 
-        this.notifyAll({ type: "user-rename", newName, user: this.user })
+        if (newName == user.name()) { return }
+
+        notifyAll("user-rename", { code: user.code, newName })
     }
 
-    startGame() {
-        const serverSelected = String(document.getElementById("list-servers").value)
-        this.changeServer(serverSelected.substring(7))
+    const startGame = () => {
+
     }
 
-    changeServer(serverInitial) {
-        this.notifyAll({ type: "user-changeServer", serverInitial, user: this.user })
+    const changeServer = () => {
+
+    }
+
+    return {
+        subscribeObserver,
+        registerUser,
+        initialComponents,
     }
 }
