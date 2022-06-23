@@ -27,8 +27,8 @@ export default function ControlUser() {
         controlStateUser.renameUser(command)
     }
 
-    const changeServer = (command) => {
-        controlStateUser.changeServer(command)
+    const userEnterServer = (command) => {
+        controlStateUser.userEnterServer(command)
     }
 
     const getUsers = () => {
@@ -39,7 +39,7 @@ export default function ControlUser() {
         createUser,
         removeUser,
         renameUser,
-        changeServer,
+        userEnterServer,
         getUsers,
     }
 }

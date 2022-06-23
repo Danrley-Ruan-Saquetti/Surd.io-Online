@@ -18,6 +18,13 @@ server.listen(port, () => {
     controlMain.subscribeObserver((type, command) => {
         sockets.emit(type, command)
     })
+
+    const INITIALS = [`A`, `B`, `C`, `D`, `E`]
+
+    INITIALS.forEach((initial) => {
+        console.log(`Console: Server ${initial} created!`);
+        controlMain.createServer({ initial })
+    })
 })
 
 sockets.on("connection", (socket) => {
@@ -35,13 +42,13 @@ sockets.on("connection", (socket) => {
     })
 
     socket.on("user-rename", (command) => {
-        console.log(`Console: User ${id} rename ${controlMain.getState().users[code].name} to ${command.newName}`);
+        console.log(`Console: User ${id} rename ${controlMain.getState().users[code].name} to ${command.newName}!`);
 
         controlMain.renameUser(command)
     })
 
     socket.on("user-change-server", (command) => {
-        console.log(`Console: User ${id} change server ${controlMain.getState().users[code].serverConnected} to server ${command.newServer}`)
+        console.log(`Console: User ${id} change server ${controlMain.getState().users[code].serverConnected} to server ${command.newServer}!`)
 
         controlMain.changeServerUser(command)
     })

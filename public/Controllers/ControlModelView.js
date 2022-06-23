@@ -55,6 +55,24 @@ export default function ControlModelView() {
         tag.innerHTML = command.name
     }
 
+    // Server
+    const addServerList = (command) => {
+        const option = document.createElement("option")
+
+        option.value = `server-${command.initial}`
+        option.innerHTML = command.name
+
+        TAGS.listServers.appendChild(option)
+    }
+
+    const serverList = (command) => {
+        TAGS.listServers.innerHTML = ""
+        Object.keys(command.servers).map((i) => {
+            const server = command.servers[i]
+            addServerList(server)
+        })
+    }
+
     return {
         subscribeUser,
         userTag,
@@ -62,5 +80,6 @@ export default function ControlModelView() {
         addUser,
         removeUser,
         renameUser,
+        serverList,
     }
 }

@@ -1,9 +1,10 @@
 export default function ControlState() {
     const state = {
-        users: {}
+        users: {},
+        servers: {},
     }
 
-    //User
+    // User
     const createUser = (command) => {
         state.users[command.code] = command
     }
@@ -16,8 +17,13 @@ export default function ControlState() {
         state.users[command.code].name = command.newName
     }
 
-    const changeServer = (command) => {
+    const userEnterServer = (command) => {
         state.users[command.code].serveConnected = command.newServer
+    }
+
+    // Server
+    const createServer = (command) => {
+        state.servers[command.code] = command
     }
 
     return {
@@ -25,6 +31,7 @@ export default function ControlState() {
         createUser,
         removeUser,
         renameUser,
-        changeServer,
+        userEnterServer,
+        createServer,
     }
 }

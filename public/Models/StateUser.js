@@ -3,7 +3,6 @@ import ControlState from "./ControlState.js"
 export default function StateUser() {
     const stateUser = ControlState()
 
-    //User
     const createUser = (command) => {
         stateUser.createUser(command)
     }
@@ -16,8 +15,8 @@ export default function StateUser() {
         stateUser.renameUser(command)
     }
 
-    const changeServer = (command) => {
-        stateUser.changeServer(command)
+    const userEnterServer = (command) => {
+        stateUser.userEnterServer(command)
     }
 
     return {
@@ -25,6 +24,6 @@ export default function StateUser() {
         createUser,
         removeUser,
         renameUser,
-        changeServer,
+        userEnterServer,
     }
 }

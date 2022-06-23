@@ -62,7 +62,7 @@ export default function ControlInputListener() {
 
     }
 
-    const changeServer = () => {
+    const userEnterServer = () => {
 
     }
 

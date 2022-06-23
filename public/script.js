@@ -16,7 +16,8 @@ socket.on("connect", () => {
         controlMain.setup(command.state)
 
         controlModelView.subscribeUser({ code: userCode })
-        controlModelView.userList(command.state)
+        controlModelView.userList({ users: command.state.users })
+        controlModelView.serverList({ servers: command.state.servers })
         controlModelView.userTag({ name: controlMain.getState().users[userCode].name })
         controlInputListener.registerUser({
             code: userCode,
