@@ -1,14 +1,12 @@
-import ControlState from "./ControlState.js"
-
 export default function StateServer() {
-    const stateServer = ControlState()
+    const servers = {}
 
     const createServer = (command) => {
-        stateServer.createServer(command)
+        servers[command.code] = command
     }
 
     return {
-        servers: stateServer.state.servers,
+        servers,
         createServer,
     }
 }

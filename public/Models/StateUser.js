@@ -1,26 +1,24 @@
-import ControlState from "./ControlState.js"
-
 export default function StateUser() {
-    const stateUser = ControlState()
+    const users = {}
 
     const createUser = (command) => {
-        stateUser.createUser(command)
+        users[command.code] = command
     }
 
     const removeUser = (command) => {
-        stateUser.removeUser(command)
+        delete users[command.code]
     }
 
     const renameUser = (command) => {
-        stateUser.renameUser(command)
+        users[command.code].name = command.newName
     }
 
     const userEnterServer = (command) => {
-        stateUser.userEnterServer(command)
+        users[command.code].serveConnected = command.newServer
     }
 
     return {
-        users: stateUser.state.users,
+        users,
         createUser,
         removeUser,
         renameUser,

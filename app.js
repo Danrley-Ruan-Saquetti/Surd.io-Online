@@ -9,6 +9,7 @@ const sockets = new Server(server)
 const port = 3000
 
 const controlMain = ControlMain()
+const CODE_CHAT_MAIN = "11111111"
 
 app.use(express.static("public"))
 
@@ -19,11 +20,14 @@ server.listen(port, () => {
         sockets.emit(type, command)
     })
 
+    controlMain.createChat({ code: CODE_CHAT_MAIN })
+
     const INITIALS = [`A`, `B`, `C`, `D`, `E`]
 
     INITIALS.forEach((initial) => {
         console.log(`Console: Server ${initial} created!`);
-        controlMain.createServer({ initial })
+        const code = controlMain.createServer({ initial }).code
+        controlMain.createChat({ code })
     })
 })
 
@@ -51,5 +55,11 @@ sockets.on("connection", (socket) => {
         console.log(`Console: User ${id} change server ${controlMain.getState().users[code].serverConnected} to server ${command.newServer}!`)
 
         controlMain.changeServerUser(command)
+    })
+
+    socket.on("user-send-post", (command) => {
+        console.log(`Console: User send post in the room ${command.chatCode}!`)
+
+        controlMain.createPost(command)
     })
 })

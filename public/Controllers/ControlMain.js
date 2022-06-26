@@ -1,9 +1,13 @@
+import ControlChat from "./ControlChat.js"
+import ControlPost from "./ControlPost.js"
 import ControlServer from "./ControlServer.js"
 import ControlUser from "./ControlUser.js"
 
 export default function ControlMain() {
     const controlUser = ControlUser()
     const controlServer = ControlServer()
+    const controlChat = ControlChat()
+    const controlPost = ControlPost()
 
     const observers = []
 
@@ -24,11 +28,17 @@ export default function ControlMain() {
         Object.keys(command.servers).map((i) => {
             createServer(command.servers[i])
         })
+        Object.keys(command.chats).map((i) => {
+            createChat(command.chats[i])
+        })
+        Object.keys(command.posts).map((i) => {
+            createPost(command.posts[i])
+        })
     }
 
     // User
     const createUser = (command, setup = false) => {
-        const user = controlUser.createUser(command, controlUser.getUsers().users)
+        const user = controlUser.createUser(command, controlUser.getUsers())
 
         if (!setup) {
             command.code = user.code
@@ -55,13 +65,35 @@ export default function ControlMain() {
 
     // Server
     const createServer = (command) => {
-        controlServer.createServer(command)
+        const server = controlServer.createServer(command, controlServer.getServers())
+        return { code: server.code }
+    }
+
+    // Chat
+    const createChat = (command) => {
+        controlChat.crateChat(command, controlChat.getChats())
+    }
+
+    // Post
+    const createPost = (command) => {
+        controlPost.createPost(command)
+    }
+
+    const getPostsChat = (command) => {
+        const posts = controlPost.getPosts()
+        const postsChat = {}
+        Object.keys(posts).map((i) => {
+            if (posts.chatCode != command.chatCode) { return }
+            postsChat[posts[i].code] = posts[i].code
+        })
     }
 
     const getState = () => {
         return {
             users: controlUser.getUsers(),
             servers: controlServer.getServers(),
+            chats: controlChat.getChats(),
+            posts: controlPost.getPosts(),
         }
     }
 
@@ -74,5 +106,8 @@ export default function ControlMain() {
         renameUser,
         userEnterServer,
         createServer,
+        createChat,
+        createPost,
+        getPostsChat,
     }
 }

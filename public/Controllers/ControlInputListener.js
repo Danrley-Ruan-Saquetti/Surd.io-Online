@@ -43,7 +43,11 @@ export default function ControlInputListener() {
     }
 
     const sendPost = () => {
+        const body = String(TAGS.bodyPost.value)
 
+        if (body != "") { return }
+
+        notifyAll("user-send-post", {})
     }
 
     const renameUser = () => {
