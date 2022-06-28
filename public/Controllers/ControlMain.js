@@ -31,9 +31,6 @@ export default function ControlMain() {
         Object.keys(command.chats).map((i) => {
             createChat(command.chats[i])
         })
-        Object.keys(command.posts).map((i) => {
-            createPost(command.posts[i], true)
-        })
     }
 
     // User
@@ -53,7 +50,7 @@ export default function ControlMain() {
         controlUser.removeUser(command)
     }
 
-    const renameUser = (command, code) => {
+    const renameUser = (command) => {
         notifyAll("user-rename", command)
         controlUser.renameUser(command)
         controlPost.renameUser(command)
@@ -62,6 +59,10 @@ export default function ControlMain() {
     const userEnterGame = (command) => {
         notifyAll("user-change-server", command)
         controlUser.userEnterGame(command)
+    }
+
+    const getContUsers = () => {
+        return controlUser.getContUsers()
     }
 
     // Server
@@ -110,6 +111,7 @@ export default function ControlMain() {
         createUser,
         removeUser,
         renameUser,
+        getContUsers,
         userEnterGame,
         createServer,
         createChat,

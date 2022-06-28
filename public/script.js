@@ -28,16 +28,10 @@ socket.on("connect", () => {
             servers: command.state.servers,
             posts: {}
         }
-        Object.keys(command.state.posts).map((i) => {
-            const post = command.state.posts[i]
-            if (post.chatCode != controlMain.getState().users[userCode].serverConnected &&
-                (post.chatCode != "11111111" || controlMain.getState().users[userCode].serverConnected != null)) { return }
-
-            state.posts[post.code] = post
-        })
 
         controlModelView.setup(state)
         controlModelView.userTag({ name: controlMain.getState().users[userCode].name })
+        controlModelView.setContUsers({ contUsers: controlMain.getContUsers() })
         controlInputListener.registerUser(user)
         controlInputListener.subscribeObserver((type, command) => {
             socket.emit(type, command)
@@ -48,11 +42,13 @@ socket.on("connect", () => {
         if (socket.id == command.id) { return }
         const code = controlMain.createUser(command).code
         controlModelView.addUser(controlMain.getState().users[code])
+        controlModelView.setContUsers({ contUsers: controlMain.getContUsers() })
     })
 
     socket.on("user-disconnected", (command) => {
         controlMain.removeUser(command)
         controlModelView.removeUser(command)
+        controlModelView.setContUsers({ contUsers: controlMain.getContUsers() })
     })
 
     socket.on("user-rename", (command) => {

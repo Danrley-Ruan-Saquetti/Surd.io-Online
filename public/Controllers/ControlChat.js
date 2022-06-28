@@ -8,7 +8,6 @@ export default function ControlChat() {
         const code = command.code ? command.code : GeneratedCode(chats).code
         const chat = {
             code: code,
-            posts: {}
         }
 
         controlStateChat.createChat(chat)

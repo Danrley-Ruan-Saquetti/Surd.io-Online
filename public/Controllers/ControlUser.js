@@ -31,6 +31,14 @@ export default function ControlUser() {
         controlStateUser.userEnterGame(command)
     }
 
+    const getContUsers = () => {
+        let _cont = 0
+
+        Object.keys(controlStateUser.users).map(i => _cont++)
+
+        return _cont
+    }
+
     const getUsers = () => {
         return controlStateUser.users
     }
@@ -40,6 +48,7 @@ export default function ControlUser() {
         removeUser,
         renameUser,
         userEnterGame,
+        getContUsers,
         getUsers,
     }
 }

@@ -3,6 +3,7 @@ const TAGS = {
     listUsers: document.getElementById("list-users"),
     listServers: document.getElementById("list-servers"),
     listPosts: document.getElementById("list-posts"),
+    contUsers: document.getElementById("cont-users"),
 }
 
 export default function ControlModelView() {
@@ -90,6 +91,10 @@ export default function ControlModelView() {
         tag.classList.toggle(`user-playing`, false)
     }
 
+    const setContUsers = (command) => {
+        TAGS.contUsers.innerHTML = command.contUsers
+    }
+
     // Server
     const addServerList = (command) => {
         const option = document.createElement("option")
@@ -147,6 +152,7 @@ export default function ControlModelView() {
         removeUser,
         renameUser,
         userEnterGame,
+        setContUsers,
         addPost,
         removePost,
         userQuitGame,
