@@ -39,14 +39,35 @@ sockets.on("connection", (socket) => {
 
     socket.emit("setup", { state: controlMain.getState(), code })
 
+    const postInfoUserConnected = {
+        chatCode: CODE_CHAT_MAIN,
+        userCode: code,
+        username: controlMain.getState().users[code].name,
+        type: "info",
+        body: `New User connected.`
+    }
+
+    controlMain.createPost(postInfoUserConnected)
+
     socket.on("disconnect", () => {
         console.log(`Console: User ${id} disconnected!`);
+
+        const postInfoUserDisconnected = {
+            chatCode: CODE_CHAT_MAIN,
+            userCode: code,
+            username: controlMain.getState().users[code].name,
+            type: "info",
+            body: `User disconnected.`
+        }
+
+        controlMain.createPost(postInfoUserDisconnected)
 
         controlMain.removeUser({ code })
     })
 
     socket.on("user-rename", (command) => {
-        console.log(`Console: User ${id} rename ${controlMain.getState().users[code].name} to ${command.newName}!`);
+        command.oldName = controlMain.getState().users[code].name
+        console.log(`Console: User ${id} rename ${command.oldName} to ${command.newName}!`);
 
         controlMain.renameUser(command)
     })
@@ -58,8 +79,25 @@ sockets.on("connection", (socket) => {
     })
 
     socket.on("user-send-post", (command) => {
-        console.log(`Console: User send post in the room ${command.chatCode}!`)
-
+        command.chatCode = controlMain.getState().users[code].serverConnected == null ? CODE_CHAT_MAIN : controlMain.getState().users[code].serverConnected
+        console.log(`Console: User ${id} send post in the room ${command.chatCode}!`)
+        command.username = controlMain.getState().users[code].name
+        command.type = "post"
         controlMain.createPost(command)
+    })
+
+    socket.on("user-start-game", (command) => {
+        console.log(`Console: User ${id} enter game in the server ${command.serverCode}!`);
+        controlMain.userEnterGame(command)
+
+        const postInfoUserDisconnected = {
+            chatCode: CODE_CHAT_MAIN,
+            userCode: code,
+            username: controlMain.getState().users[code].name,
+            type: "info",
+            body: `User enter server ${controlMain.getState().servers[command.serverCode].name}.`
+        }
+
+        controlMain.createPost(postInfoUserDisconnected)
     })
 })

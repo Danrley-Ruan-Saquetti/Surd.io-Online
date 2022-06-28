@@ -9,15 +9,26 @@ export default function ControlPost() {
         const post = {
             code: code,
             userCode: command.userCode,
+            username: command.username,
             chatCode: command.chatCode,
-            body: command.body
+            body: command.body,
+            type: command.type,
         }
 
         controlStatePost.createPost(post)
+
+        return { code }
     }
 
     const removePost = (command) => {
         controlStatePost.removePost(command)
+    }
+
+    const renameUser = (command) => {
+        Object.keys(controlStatePost.posts).map(i => {
+            if (controlStatePost.posts[i].userCode != command.code) { return }
+            controlStatePost.renameUserPost(command, controlStatePost.posts[i].code)
+        })
     }
 
     const getContPosts = (command) => {
@@ -33,5 +44,6 @@ export default function ControlPost() {
         createPost,
         removePost,
         getContPosts,
+        renameUser,
     }
 }

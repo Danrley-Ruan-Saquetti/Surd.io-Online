@@ -1,6 +1,5 @@
 const TAGS = {
     nameTag: document.getElementById("name-tag"),
-    renameUser: document.getElementById("rename-user"),
     listServer: document.getElementById("list-servers"),
     startGame: document.getElementById("start-game"),
     bodyPost: document.getElementById("body-post"),
@@ -31,23 +30,18 @@ export default function ControlInputListener() {
     }
 
     const initialComponents = () => {
-        TAGS.renameUser.addEventListener("click", (ev) => renameUser())
         TAGS.sendPost.addEventListener("click", (ev) => sendPost())
         TAGS.startGame.addEventListener("click", (ev) => startGame())
-        TAGS.nameTag.addEventListener("focusout", (ev) => {
-            const newName = String(TAGS.nameTag.value)
-            if (newName == "") {
-                TAGS.nameTag.value = user.name()
-            }
-        })
+        TAGS.nameTag.addEventListener("focusout", (ev) => renameUser())
+        document.addEventListener("keydown", (ev) => { if (ev.keyCode == 13) { pressEnter() } })
     }
 
     const sendPost = () => {
         const body = String(TAGS.bodyPost.value)
+        if (body == "") { return }
 
-        if (body != "") { return }
-
-        notifyAll("user-send-post", {})
+        notifyAll("user-send-post", { body, userCode: user.code })
+        TAGS.bodyPost.value = ""
     }
 
     const renameUser = () => {
@@ -63,10 +57,16 @@ export default function ControlInputListener() {
     }
 
     const startGame = () => {
+        const server = String(TAGS.listServer.value).substring(7)
 
+        notifyAll("user-start-game", { serverCode: server, code: user.code })
     }
 
     const userEnterServer = () => {
+
+    }
+
+    const pressEnter = () => {
 
     }
 

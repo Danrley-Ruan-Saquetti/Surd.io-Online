@@ -2,11 +2,15 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 html {
     font-size: 62.5%;
 }
 body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
     width: 100vw;
     height: 100vh;
@@ -14,67 +18,119 @@ body {
     font-size: 1.6rem;
     background-color: #000;
 }
-input,
+button:hover {
+    cursor: pointer;
+}
+a,
 button,
-select,
-textarea {
-    border: none;
+input,
+textarea,
+select {
     outline: none;
+    border: none;
 }
 textarea {
     resize: none;
 }
-button:hover {
-    cursor: pointer;
-}
-a {
-    text-decoration: none;
+:root {
+    --spacing-box-flex: .5rem;
 }
 
-/* +- UI */
+/* MENU */
 
 #ui {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-}
-#menu-content {
     position: absolute;
-    display: flex;
-    width: 80%;
-    height: 80%;
+    height: 80vh;
+    width: 80vw;
 }
-section {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    background-color: #fff;
+.section-content {
+    padding: 2rem 1rem 2rem 1rem;
     border-radius: 2rem;
-    width: 33.3%;
-    padding: 2rem;
+    background-color: #fff;
 }
-#users-connected,
-#chat-lobby {
-    height: 100%;
+#list-posts,
+#list-users {
+    padding: 1rem;
+    border-radius: 2rem;
+    overflow: auto;
+    overflow-x: hidden;
+    box-shadow: inset 0px 0px 15px rgba(0, 0, 0, .2);
+}
+.content-info {
+    margin-left: 1rem;
+    margin-bottom: .8rem;
+    font-size: 1.8rem;
+}
+.posts,
+.users {
+    display: flex;
+    margin-bottom: .5rem;
 }
 
-/* +-- users-connected */
+/* MENU - USERS */
 
+#users-connected {
+    width: 20%;
+    min-width: 17.2rem;
+}
+#list-users {
+    height: 90%;
+}
+.user-state {
+    position: relative;
+    margin-left: auto;
+    width: 1rem;
+    height: 1rem;
+    transform: translateY(.5rem) rotate(45deg);
+    background-color: #00a023;
+}
+.user-state.user-playing {
+    background-color: #ff0000;
+}
 
-/* +-- menu */
+/* MENU - MAIN */
 
 #menu {
-    height: 25%;
-    margin: 0 0.5% 0 0.5%;
+    display: flex;
+    width: 22.7rem;
+    margin: 0 1% 0 1%;
+    flex-direction: column;
+    height: max-content;
+}
+#menu div {
+    margin-bottom: .7rem;
+}
+#username {
+    display: flex;
+}
+#username label {
+    margin-right: .7rem;
+}
+#name-tag {
+    min-width: 3rem;
+    border-bottom: 1px solid #000;
 }
 
-/* +-- chat-lobby */
+/* MENU - CHAT */
 
+#chat-lobby {
+    width: 44%;
+    min-width: 35rem;
+}
+#list-posts {
+    height: 85%;
+}
 #fill-text {
     display: flex;
-    position: absolute;
-    bottom: 2rem;
+    width: 100%;
+    margin-top: .7rem;
+    height: auto;
+}
+#body-post {
+    width: 80%;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, .2);
+}
+#send-post {
+    width: 20%;
 }

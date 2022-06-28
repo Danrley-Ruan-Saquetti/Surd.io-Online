@@ -12,34 +12,35 @@
 
 <body>
     <main id="ui">
-        <div id="menu-content">
-            <section id="users-connected">
-                <div id="content-users" class="content-info"><span>Lista de Usuários</span></div>
-                <div id="list-users"></div>
-            </section>
+        <div id="users-connected" class="section-content">
+            <div id="content-users" class="content-info">
+                <p><span>Lista de Usuários</span></p>
+            </div>
+            <div id="list-users"></div>
+        </div>
 
-            <section id="menu">
-                <div id="username">
-                    <label for="name-tag">Nome:</label>
-                    <input type="text" name="nick-game" id="name-tag" placeholder="Insira um nome pro jogador" value="">
-                    <button type="submit" id="rename-user">Renomear</button>
-                </div>
-                <div id="server-select">
-                    <label for="list-servers">Escolha um server</label>
+        <div id="menu" class="section-content">
+            <div id="username">
+                <label for="name-tag">Nome:</label>
+                <input type="text" name="nick-game" id="name-tag" placeholder="Insira um nome pro jogador" value="">
+            </div>
+            <div id="server-select">
+                <label for="list-servers">Escolha um server</label>
 
-                    <select name="server" id="list-servers"></select>
-                </div>
-                <button type="submit" title="Enter Game" id="start-game">Começar jogo!</button>
-            </section>
+                <select name="server" id="list-servers"></select>
+            </div>
+            <button type="submit" title="Enter Game" id="start-game">Começar jogo!</button>
+        </div>
 
-            <section id="chat-lobby">
-                <div id="content-posts" class="content-info"><span>Chat</span></div>
-                <div id="list-posts"></div>
-                <div id="fill-text">
-                    <textarea name="body-post" id="body-post" placeholder="Escreva a mensagem"></textarea>
-                    <button type="submit" id="send-post">Enviar</button>
-                </div>
-            </section>
+        <div id="chat-lobby" class="section-content">
+            <div id="content-posts" class="content-info">
+                <p><span>Chat</span></p>
+            </div>
+            <div id="list-posts"></div>
+            <div id="fill-text">
+                <textarea name="body-post" id="body-post" placeholder="Escreva a mensagem"></textarea>
+                <button type="submit" id="send-post">Enviar</button>
+            </div>
         </div>
     </main>
 

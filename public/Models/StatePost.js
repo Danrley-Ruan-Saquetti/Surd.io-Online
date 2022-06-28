@@ -9,6 +9,10 @@ export default function StatePost() {
         delete posts[command.code]
     }
 
+    const renameUserPost = (command, postCode) => {
+        posts[postCode].username = command.newName
+    }
+
     const getContPosts = (command) => {
         let _cont = 0
         let _postCode = null
@@ -26,6 +30,7 @@ export default function StatePost() {
         posts,
         createPost,
         removePost,
+        renameUserPost,
         getContPosts,
     }
 }

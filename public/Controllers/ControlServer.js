@@ -8,6 +8,7 @@ export default function ControlServer() {
         const code = command.code ? command.code : GeneratedCode(servers).code
         const server = {
             code: code,
+            initial: command.initial,
             name: command.name ? command.name : `Server ${command.initial}`,
         }
 

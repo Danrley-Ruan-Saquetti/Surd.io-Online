@@ -15,16 +15,30 @@ socket.on("connect", () => {
         userCode = command.code
         controlMain.setup(command.state)
 
-        controlModelView.subscribeUser({ code: userCode })
-        controlModelView.userList({ users: command.state.users })
-        controlModelView.serverList({ servers: command.state.servers })
-        controlModelView.userTag({ name: controlMain.getState().users[userCode].name })
-        controlInputListener.registerUser({
+        const user = {
             code: userCode,
             getName: () => {
                 return controlMain.getState().users[userCode].name
             }
+        }
+
+        controlModelView.registerUser(user)
+        const state = {
+            users: command.state.users,
+            servers: command.state.servers,
+            posts: {}
+        }
+        Object.keys(command.state.posts).map((i) => {
+            const post = command.state.posts[i]
+            if (post.chatCode != controlMain.getState().users[userCode].serverConnected &&
+                (post.chatCode != "11111111" || controlMain.getState().users[userCode].serverConnected != null)) { return }
+
+            state.posts[post.code] = post
         })
+
+        controlModelView.setup(state)
+        controlModelView.userTag({ name: controlMain.getState().users[userCode].name })
+        controlInputListener.registerUser(user)
         controlInputListener.subscribeObserver((type, command) => {
             socket.emit(type, command)
         })
@@ -47,7 +61,13 @@ socket.on("connect", () => {
     })
 
     socket.on("user-change-server", (command) => {
-        controlMain.changeServerUser(command)
+        controlMain.userEnterGame(command)
+        controlModelView.userEnterGame(command)
+    })
+
+    socket.on("user-send-post", (command) => {
+        controlMain.createPost(command)
+        controlModelView.addPost(command)
     })
 })
 
