@@ -7,11 +7,6 @@ const TAGS = {
     quitGame: document.getElementById("quit-game"),
     bodyPost: document.getElementById("body-post"),
     sendPost: document.getElementById("send-post"),
-    chatGame: document.getElementById("chat-game"),
-    chatGameOpen: document.getElementById("open-chat"),
-    chatGameClose: document.getElementById("close-chat"),
-    bodyPostGame: document.getElementById("body-post-game"),
-    sendPostGame: document.getElementById("send-post-game"),
 }
 
 export default function ControlInputListener() {
@@ -39,7 +34,6 @@ export default function ControlInputListener() {
 
     const initialComponents = () => {
         TAGS.sendPost.addEventListener("click", (ev) => sendPost())
-        TAGS.sendPostGame.addEventListener("click", (ev) => sendPostGame())
         TAGS.startGame.addEventListener("click", (ev) => startGame())
         TAGS.quitGame.addEventListener("click", (ev) => quitGame())
         TAGS.nameTag.addEventListener("focusout", (ev) => renameUser())
@@ -52,9 +46,7 @@ export default function ControlInputListener() {
     }
 
     const toggleChat = () => {
-        TAGS.chatGame.classList.toggle("active")
-        TAGS.chatGameOpen.classList.toggle("off")
-        TAGS.chatGameClose.classList.toggle("on")
+
     }
 
     const keyPress = (ev) => {
@@ -63,14 +55,6 @@ export default function ControlInputListener() {
                 toggleChat()
                 break;
         }
-    }
-
-    const sendPostGame = () => {
-        const body = String(TAGS.bodyPostGame.value)
-        if (body == "") { return }
-
-        notifyAll("user-send-post", { body, userCode: user.code })
-        TAGS.bodyPostGame.value = ""
     }
 
     const sendPost = () => {
