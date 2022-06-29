@@ -13,9 +13,14 @@ export default function StateUser() {
         users[command.code].name = command.newName
     }
 
-    const userEnterGame = (command) => {
+    const userStartGame = (command) => {
         users[command.code].serverConnected = command.serverCode
         users[command.code].playingGame = true
+    }
+
+    const userQuitGame = (command) => {
+        users[command.code].serverConnected = null
+        users[command.code].playingGame = false
     }
 
     return {
@@ -23,6 +28,7 @@ export default function StateUser() {
         createUser,
         removeUser,
         renameUser,
-        userEnterGame,
+        userStartGame,
+        userQuitGame,
     }
 }

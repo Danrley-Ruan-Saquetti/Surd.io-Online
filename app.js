@@ -31,6 +31,18 @@ server.listen(port, () => {
     })
 })
 
+const systemSendPost = (command) => {
+    const postInfoUserDisconnected = {
+        chatCode: CODE_CHAT_MAIN,
+        userCode: command.code,
+        username: controlMain.getState().users[command.code].name,
+        type: "info",
+        body: command.body
+    }
+
+    controlMain.createPost(postInfoUserDisconnected)
+}
+
 sockets.on("connection", (socket) => {
     const id = socket.id
     console.log(`Console: User ${id} connected!`);
@@ -39,28 +51,12 @@ sockets.on("connection", (socket) => {
 
     socket.emit("setup", { state: controlMain.getState(), code })
 
-    const postInfoUserConnected = {
-        chatCode: CODE_CHAT_MAIN,
-        userCode: code,
-        username: controlMain.getState().users[code].name,
-        type: "info",
-        body: `New User connected.`
-    }
-
-    controlMain.createPost(postInfoUserConnected)
+    systemSendPost({ code, body: `User connected` })
 
     socket.on("disconnect", () => {
         console.log(`Console: User ${id} disconnected!`);
 
-        const postInfoUserDisconnected = {
-            chatCode: CODE_CHAT_MAIN,
-            userCode: code,
-            username: controlMain.getState().users[code].name,
-            type: "info",
-            body: `User disconnected.`
-        }
-
-        controlMain.createPost(postInfoUserDisconnected)
+        systemSendPost({ code, body: `User disconnected` })
 
         controlMain.removeUser({ code })
     })
@@ -70,12 +66,6 @@ sockets.on("connection", (socket) => {
         console.log(`Console: User ${id} rename ${command.oldName} to ${command.newName}!`);
 
         controlMain.renameUser(command)
-    })
-
-    socket.on("user-change-server", (command) => {
-        console.log(`Console: User ${id} change server ${controlMain.getState().users[code].serverConnected} to server ${command.newServer}!`)
-
-        controlMain.changeServerUser(command)
     })
 
     socket.on("user-send-post", (command) => {
@@ -88,7 +78,7 @@ sockets.on("connection", (socket) => {
 
     socket.on("user-start-game", (command) => {
         console.log(`Console: User ${id} enter game in the server ${command.serverCode}!`);
-        controlMain.userEnterGame(command)
+        controlMain.userStartGame(command)
 
         const postInfoUserDisconnected = {
             chatCode: CODE_CHAT_MAIN,
@@ -99,5 +89,10 @@ sockets.on("connection", (socket) => {
         }
 
         controlMain.createPost(postInfoUserDisconnected)
+    })
+
+    socket.on("user-quit-game", (command) => {
+        console.log(`Console: User ${id} quit game in the server ${command.serverCode}!`);
+        controlMain.userQuitGame(command)
     })
 })

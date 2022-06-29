@@ -18,6 +18,9 @@ body {
     font-size: 1.6rem;
     background-color: #000;
 }
+button {
+    transition: .2s;
+}
 button:hover {
     cursor: pointer;
 }
@@ -28,12 +31,22 @@ textarea,
 select {
     outline: none;
     border: none;
+    background: none;
 }
 textarea {
     resize: none;
 }
-:root {
-    --spacing-box-flex: .5rem;
+#ui.off {
+    display: none;
+}
+#renderer-game.on {
+    display: block;
+}
+#open-chat.off {
+    display: none;
+}
+#close-chat.on {
+    display: block;
 }
 
 /* MENU */
@@ -56,6 +69,7 @@ textarea {
     margin-bottom: 0;
 }
 #list-posts,
+#list-posts-game,
 #list-users {
     padding: 1rem;
     border-radius: 2rem;
@@ -94,6 +108,9 @@ textarea {
 .user-state.user-playing {
     background-color: #ff0000;
 }
+#cont-users {
+    margin-left: 1rem;
+}
 
 /* MENU - MAIN */
 
@@ -113,6 +130,19 @@ textarea {
 #name-tag {
     min-width: 3rem;
     border-bottom: 1px solid #000;
+}
+#list-servers {
+    border-bottom: 1px solid #000;
+}
+#start-game {
+    font-size: 1.5rem;
+    padding: 1rem 0;
+    border-radius: .3rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+}
+#start-game:hover {
+    background-color: dodgerblue;
+    color: #fff;
 }
 
 /* MENU - CHAT */
@@ -142,5 +172,95 @@ textarea {
     justify-content: right;
 }
 .posts.info {
+    justify-content: center;
+}
+
+/* RENDERER-GAME */
+
+#renderer-game {
+    display: none;
+}
+
+/* RENDERER-GAME - QUIT GAME */
+
+#quit-game-content {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 10rem;
+    height: 5rem;
+    border-radius: 1rem;
+    background-color: #fff;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, .2);
+    overflow: hidden;
+}
+#quit-game {
+    width: 100%;
+    height: 100%;
+}
+#quit-game:hover {
+    background-color: dodgerblue;
+    color: #fff;
+}
+
+/* RENDERER-GAME - CANVAS */
+
+#canvas {
+    background-color: #000;
+}
+
+/* RENDERER-GAME - CHAT */
+
+#chat-game.active {
+    width: 3rem;
+    height: 3rem;
+}
+#chat-game {
+    position: fixed;
+    right: 2rem;
+    bottom: 2rem;
+    width: 25vw;
+    height: 25vw;
+    background-color: #fff;
+    overflow: hidden;
+    border-radius: 2rem;
+    padding: 2rem 1rem 2rem 1rem;
+}
+#open-chat {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+#open-chat div {
+    margin-bottom: 1rem;
+}
+#open-chat div:last-child {
+    margin-bottom: 0;
+}
+#close-chat {
+    display: none;
+}
+#list-posts-game {
+    height: 83%;
+}
+#fill-text-game {
+    display: flex;
+    width: 100%;
+    height: auto;
+}
+#body-post-game {
+    width: 80%;
+    height: auto;
+    padding: .3rem;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, .2);
+}
+#send-post-game {
+    width: 20%;
+}
+.posts-game.this-post {
+    justify-content: right;
+}
+.posts-game.info {
     justify-content: center;
 }

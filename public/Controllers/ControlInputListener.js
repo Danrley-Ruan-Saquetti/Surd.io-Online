@@ -1,9 +1,17 @@
 const TAGS = {
+    ui: document.getElementById("ui"),
+    rendererGame: document.getElementById("renderer-game"),
     nameTag: document.getElementById("name-tag"),
     listServer: document.getElementById("list-servers"),
     startGame: document.getElementById("start-game"),
+    quitGame: document.getElementById("quit-game"),
     bodyPost: document.getElementById("body-post"),
     sendPost: document.getElementById("send-post"),
+    chatGame: document.getElementById("chat-game"),
+    chatGameOpen: document.getElementById("open-chat"),
+    chatGameClose: document.getElementById("close-chat"),
+    bodyPostGame: document.getElementById("body-post-game"),
+    sendPostGame: document.getElementById("send-post-game"),
 }
 
 export default function ControlInputListener() {
@@ -31,9 +39,38 @@ export default function ControlInputListener() {
 
     const initialComponents = () => {
         TAGS.sendPost.addEventListener("click", (ev) => sendPost())
+        TAGS.sendPostGame.addEventListener("click", (ev) => sendPostGame())
         TAGS.startGame.addEventListener("click", (ev) => startGame())
+        TAGS.quitGame.addEventListener("click", (ev) => quitGame())
         TAGS.nameTag.addEventListener("focusout", (ev) => renameUser())
-        document.addEventListener("keydown", (ev) => { if (ev.keyCode == 13) { pressEnter() } })
+        document.addEventListener("keydown", (ev) => keyPress(ev))
+    }
+
+    const toggleScreen = () => {
+        TAGS.ui.classList.toggle("off")
+        TAGS.rendererGame.classList.toggle("on")
+    }
+
+    const toggleChat = () => {
+        TAGS.chatGame.classList.toggle("active")
+        TAGS.chatGameOpen.classList.toggle("off")
+        TAGS.chatGameClose.classList.toggle("on")
+    }
+
+    const keyPress = (ev) => {
+        switch (ev.keyCode) {
+            case 13:
+                toggleChat()
+                break;
+        }
+    }
+
+    const sendPostGame = () => {
+        const body = String(TAGS.bodyPostGame.value)
+        if (body == "") { return }
+
+        notifyAll("user-send-post", { body, userCode: user.code })
+        TAGS.bodyPostGame.value = ""
     }
 
     const sendPost = () => {
@@ -58,12 +95,14 @@ export default function ControlInputListener() {
 
     const startGame = () => {
         const server = String(TAGS.listServer.value).substring(7)
-
         notifyAll("user-start-game", { serverCode: server, code: user.code })
+        toggleScreen()
     }
 
-    const userEnterServer = () => {
-
+    const quitGame = () => {
+        const server = String(TAGS.listServer.value).substring(7)
+        notifyAll("user-quit-game", { serverCode: server, code: user.code })
+        toggleScreen()
     }
 
     const pressEnter = () => {

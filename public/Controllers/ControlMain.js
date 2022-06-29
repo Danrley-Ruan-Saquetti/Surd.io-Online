@@ -53,12 +53,16 @@ export default function ControlMain() {
     const renameUser = (command) => {
         notifyAll("user-rename", command)
         controlUser.renameUser(command)
-        controlPost.renameUser(command)
     }
 
-    const userEnterGame = (command) => {
-        notifyAll("user-change-server", command)
-        controlUser.userEnterGame(command)
+    const userStartGame = (command) => {
+        notifyAll("user-start-game", command)
+        controlUser.userStartGame(command)
+    }
+
+    const userQuitGame = (command) => {
+        notifyAll("user-quit-game", command)
+        controlUser.userQuitGame(command)
     }
 
     const getContUsers = () => {
@@ -112,7 +116,8 @@ export default function ControlMain() {
         removeUser,
         renameUser,
         getContUsers,
-        userEnterGame,
+        userStartGame,
+        userQuitGame,
         createServer,
         createChat,
         createPost,

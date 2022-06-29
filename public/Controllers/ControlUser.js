@@ -27,8 +27,12 @@ export default function ControlUser() {
         controlStateUser.renameUser(command)
     }
 
-    const userEnterGame = (command) => {
-        controlStateUser.userEnterGame(command)
+    const userStartGame = (command) => {
+        controlStateUser.userStartGame(command)
+    }
+
+    const userQuitGame = (command) => {
+        controlStateUser.userQuitGame(command)
     }
 
     const getContUsers = () => {
@@ -47,7 +51,8 @@ export default function ControlUser() {
         createUser,
         removeUser,
         renameUser,
-        userEnterGame,
+        userStartGame,
+        userQuitGame,
         getContUsers,
         getUsers,
     }

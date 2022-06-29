@@ -1,12 +1,14 @@
 import ControlInputListener from "./Controllers/ControlInputListener.js"
 import ControlMain from "./Controllers/ControlMain.js"
 import ControlModelView from "./Controllers/ControlModelView.js"
+import ControlRendererGame from "./Controllers/ControlRendererGame.js"
 
 const socket = io()
 
 const controlMain = ControlMain()
 const controlInputListener = ControlInputListener()
 const controlModelView = ControlModelView()
+const controlRendererGame = ControlRendererGame({}, document.getElementById("canvas"))
 
 let userCode
 
@@ -56,9 +58,14 @@ socket.on("connect", () => {
         controlModelView.renameUser({ code: command.code, name: command.newName })
     })
 
-    socket.on("user-change-server", (command) => {
-        controlMain.userEnterGame(command)
-        controlModelView.userEnterGame(command)
+    socket.on("user-start-game", (command) => {
+        controlMain.userStartGame(command)
+        controlModelView.userStartGame(command)
+    })
+
+    socket.on("user-quit-game", (command) => {
+        controlMain.userQuitGame(command)
+        controlModelView.userQuitGame(command)
     })
 
     socket.on("user-send-post", (command) => {

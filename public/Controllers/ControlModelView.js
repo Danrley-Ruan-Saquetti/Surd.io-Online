@@ -79,7 +79,7 @@ export default function ControlModelView() {
         renameUserPost(command)
     }
 
-    const userEnterGame = (command) => {
+    const userStartGame = (command) => {
         const tag = document.getElementById(`state-user-${command.code}`)
 
         tag.classList.toggle(`user-playing`, true)
@@ -151,7 +151,7 @@ export default function ControlModelView() {
         addUser,
         removeUser,
         renameUser,
-        userEnterGame,
+        userStartGame,
         setContUsers,
         addPost,
         removePost,
