@@ -143,7 +143,12 @@ export default function ControlModelView() {
             const divMain = getElement()
 
             divMain.id = `preview-post-${command.code}`
+            divMain.className += ` preview-posts`
             TAGS.listPostsChatClose.appendChild(divMain)
+
+            setInterval(() => {
+                divMain.remove()
+            }, 3000)
         }
     }
 

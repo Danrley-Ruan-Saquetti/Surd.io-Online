@@ -48,6 +48,7 @@ socket.on("connect", () => {
         controlModelView.subscribeVerifyPlayingGame(() => {
             return controlMain.getState().users[userCode].playingGame
         })
+        controlInputListener.initialComponents()
     })
 
     socket.on("user-connected", (command) => {
@@ -86,7 +87,3 @@ socket.on("connect", () => {
         controlModelView.addPost(command)
     })
 })
-
-window.onload = () => {
-    controlInputListener.initialComponents()
-}

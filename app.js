@@ -51,20 +51,20 @@ sockets.on("connection", (socket) => {
 
     socket.emit("setup", { state: controlMain.getState(), code })
 
-    systemSendPost({ userCode: code, body: `User connected` })
+    systemSendPost({ userCode: code, body: `User connected.` })
 
     if (controlMain.getState().users[code].serverConnected != null) {
-        systemSendPost({ chatCode: CODE_CHAT_MAIN, userCode: code, body: `User connected` })
+        systemSendPost({ chatCode: CODE_CHAT_MAIN, userCode: code, body: `User connected.` })
     }
 
 
     socket.on("disconnect", () => {
         console.log(`Console: User ${id} disconnected!`);
 
-        systemSendPost({ chatCode: CODE_CHAT_MAIN, userCode: code, body: `User disconnected` })
+        systemSendPost({ chatCode: CODE_CHAT_MAIN, userCode: code, body: `User disconnected.` })
 
         if (controlMain.getState().users[code].serverConnected != null) {
-            systemSendPost({ chatCode: controlMain.getState().users[code].serverConnected, userCode: code, body: `User disconnected` })
+            systemSendPost({ chatCode: controlMain.getState().users[code].serverConnected, userCode: code, body: `User disconnected.` })
         }
 
         controlMain.removeUser({ code })
@@ -104,13 +104,12 @@ sockets.on("connection", (socket) => {
 
     socket.on("user-quit-game", (command) => {
         console.log(`Console: User ${id} quit game in the server ${command.serverCode}!`);
+        controlMain.userQuitGame(command)
 
         systemSendPost({
             chatCode: command.serverCode,
             userCode: code,
             body: `User quit server.`
         })
-
-        controlMain.userQuitGame(command)
     })
 })
