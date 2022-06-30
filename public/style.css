@@ -70,6 +70,18 @@ textarea {
 .users,
 .posts {
     display: flex;
+    width: 100%;
+    max-width: 35rem;
+}
+.users p span,
+.posts p span {
+    word-wrap: break-word;
+}
+#list-users,
+#list-posts,
+#body-post {
+    overflow: auto;
+    overflow-x: hidden;
 }
 
 /* CHAT */
@@ -77,6 +89,7 @@ textarea {
 #chat {
     position: relative;
     margin: 0;
+    max-width: 45%;
 }
 .posts.this-post {
     justify-content: right;
@@ -92,8 +105,9 @@ textarea {
 #body-post {
     width: calc(75% - 1rem);
     height: 100%;
-    border-radius: .7rem;
+    border-radius: .3rem;
     padding: 1rem;
+    font-size: 1.5rem;
     box-shadow: inset 0 0 1rem rgba(0, 0, 0, .2);
 }
 #send-post {
@@ -128,7 +142,7 @@ textarea {
     padding: 2rem;
     z-index: 15;
     margin-right: .7rem;
-    border-radius: 2rem;
+    border-radius: .3rem;
 }
 #cont-users-info,
 .content-info {
@@ -142,7 +156,7 @@ textarea {
 }
 .lists-content {
     height: 83%;
-    border-radius: .7rem;
+    border-radius: .3rem;
     padding: 1rem;
     box-shadow: inset 0 0 1rem rgba(0, 0, 0, .2);
 }
@@ -169,10 +183,12 @@ textarea {
 
 #menu {
     height: min-content;
+    min-width: 25.5rem;
 }
 #name-tag,
 #list-servers {
     border-bottom: 1px solid #000;
+    font-size: 1.5rem;
 }
 #start-game {
     width: 100%;
@@ -190,6 +206,7 @@ textarea {
 /* MENU - CHAT */
 
 #list-posts {
+    width: 100%;
     height: 75%;
 }
 
@@ -229,7 +246,8 @@ textarea {
     position: absolute;
     bottom: 1rem;
     right: 1rem;
-    min-width: 25rem;
+    width: 25%;
+    min-width: 30rem;
     height: 40%;
     min-height: 35rem;
 }
@@ -243,7 +261,7 @@ textarea {
     right: 1rem;
     width: auto;
     height: auto;
-    border-radius: 1rem;
+    border-radius: .3rem;
     z-index: 15;
 }
 #content-chat-close {
@@ -259,7 +277,7 @@ textarea {
     background-color: #fff;
     border-radius: .3rem;
 }
-#content-chat-close p {
+#content-bt-open-chat {
     font-size: 3rem;
 }
 #list-posts-chat-close {
@@ -275,4 +293,35 @@ textarea {
     background-color: #fff;
     border-radius: .3rem;
     margin-top: 1rem;
+}
+#content-notification {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #ff0000;
+    width: 2rem;
+    height: 2rem;
+    border-radius: .3rem;
+    transform: translate(-1rem, -1rem);
+    color: #fff;
+}
+#content-notification.on {
+    display: block;
+}
+#content-notification p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+::-webkit-scrollbar {
+    width: .5rem;
+    border-top-right-radius: .3rem;
+    border-bottom-right-radius: .3rem;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: .3rem;
+    background-color: #808080;
 }

@@ -45,9 +45,6 @@ socket.on("connect", () => {
         controlInputListener.subscribeVerifyPlayingGame(() => {
             return controlMain.getState().users[userCode].playingGame
         })
-        controlModelView.subscribeVerifyPlayingGame(() => {
-            return controlMain.getState().users[userCode].playingGame
-        })
         controlInputListener.initialComponents()
     })
 

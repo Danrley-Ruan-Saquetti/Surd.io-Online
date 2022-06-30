@@ -6,6 +6,8 @@ const TAGS = {
     chatClose: document.getElementById("chat-close"),
     listPostsChatClose: document.getElementById("list-posts-chat-close"),
     contUsers: document.getElementById("cont-users"),
+    contentNotifications: document.getElementById("content-notification"),
+    notifications: document.getElementById("notifications"),
 }
 
 export default function ControlModelView() {
@@ -14,15 +16,11 @@ export default function ControlModelView() {
         name: () => { return "" }
     }
 
-    let verifyPlayingGame = () => { return true }
+    let _contPreviewPosts = 0
 
     const registerUser = (command) => {
         user.code = command.code
         user.name = command.getName
-    }
-
-    const subscribeVerifyPlayingGame = (command) => {
-        verifyPlayingGame = command
     }
 
     const setup = (command) => {
@@ -138,6 +136,7 @@ export default function ControlModelView() {
         }
 
         TAGS.listPosts.appendChild(getElement())
+        TAGS.listPosts.scrollTop = TAGS.listPosts.scrollHeight
 
         if (TAGS.chatClose.classList.contains("on")) {
             const divMain = getElement()
@@ -146,9 +145,14 @@ export default function ControlModelView() {
             divMain.className += ` preview-posts`
             TAGS.listPostsChatClose.appendChild(divMain)
 
+            _contPreviewPosts = TAGS.contentNotifications.classList.contains("on") ? _contPreviewPosts + 1 : 1
+            TAGS.notifications.innerHTML = _contPreviewPosts
+
+            TAGS.contentNotifications.classList.toggle("on", true)
+
             setInterval(() => {
                 divMain.remove()
-            }, 3000)
+            }, 4000)
         }
     }
 
@@ -170,7 +174,6 @@ export default function ControlModelView() {
 
     return {
         registerUser,
-        subscribeVerifyPlayingGame,
         setup,
         userTag,
         addUser,

@@ -5,12 +5,15 @@ const TAGS = {
     chat: document.getElementById("chat"),
     chatClose: document.getElementById("chat-close"),
     listServer: document.getElementById("list-servers"),
+    listPosts: document.getElementById("list-posts"),
     startGame: document.getElementById("start-game"),
     quitGame: document.getElementById("quit-game"),
     bodyPost: document.getElementById("body-post"),
     sendPost: document.getElementById("send-post"),
     listPostsChatClose: document.getElementById("list-posts-chat-close"),
     contentChatClose: document.getElementById("content-chat-close"),
+    contentNotifications: document.getElementById("content-notification"),
+    notifications: document.getElementById("notifications"),
 }
 
 export default function ControlInputListener() {
@@ -69,6 +72,9 @@ export default function ControlInputListener() {
 
             if (!TAGS.chat.classList.contains("off")) {
                 TAGS.listPostsChatClose.innerHTML = ""
+                TAGS.notifications.innerHTML = 0
+                TAGS.contentNotifications.classList.toggle("on", false)
+                TAGS.listPosts.scrollTop = TAGS.listPosts.scrollHeight
             }
         }
     }
@@ -115,10 +121,6 @@ export default function ControlInputListener() {
             TAGS.chat.classList.toggle("off", false)
             TAGS.chatClose.classList.toggle("on", false)
         }
-    }
-
-    const pressEnter = () => {
-
     }
 
     return {
