@@ -3,6 +3,8 @@ const TAGS = {
     listUsers: document.getElementById("list-users"),
     listServers: document.getElementById("list-servers"),
     listPosts: document.getElementById("list-posts"),
+    chatClose: document.getElementById("chat-close"),
+    listPostsChatClose: document.getElementById("list-posts-chat-close"),
     contUsers: document.getElementById("cont-users"),
 }
 
@@ -12,9 +14,15 @@ export default function ControlModelView() {
         name: () => { return "" }
     }
 
+    let verifyPlayingGame = () => { return true }
+
     const registerUser = (command) => {
         user.code = command.code
         user.name = command.getName
+    }
+
+    const subscribeVerifyPlayingGame = (command) => {
+        verifyPlayingGame = command
     }
 
     const setup = (command) => {
@@ -87,7 +95,6 @@ export default function ControlModelView() {
 
     const userQuitGame = (command) => {
         const tag = document.getElementById(`state-user-${command.code}`)
-
         tag.classList.toggle(`user-playing`, false)
     }
 
@@ -107,25 +114,37 @@ export default function ControlModelView() {
 
     // Posts - Lobby
     const addPostList = (command) => {
-        const divMain = document.createElement("div")
-        const p = document.createElement("p")
-        const spanBody = document.createElement("span")
-        const spanUser = document.createElement("span")
+        const getElement = () => {
+            const divMain = document.createElement("div")
+            const p = document.createElement("p")
+            const spanBody = document.createElement("span")
+            const spanUser = document.createElement("span")
 
-        spanBody.innerHTML = command.body
-        spanUser.innerHTML = `${command.username}: `
+            spanBody.innerHTML = command.body
+            spanUser.innerHTML = `${command.username}: `
 
-        divMain.id = `post-${command.code}`
-        divMain.className = `posts`
-        if (command.userCode == user.code) { divMain.classList.toggle(`this-post`) }
-        if (command.type == "info") { divMain.classList.toggle(`info`) }
-        spanBody.className = `bodies`
-        spanUser.className = `post-user-${command.userCode}`
+            divMain.id = `post-${command.code}`
+            divMain.className = `posts`
+            if (command.userCode == user.code) { divMain.classList.toggle(`this-post`) }
+            if (command.type == "info") { divMain.classList.toggle(`info`) }
+            spanBody.className = `bodies`
+            spanUser.className = `post-user-${command.userCode}`
 
-        p.append(spanUser)
-        p.append(spanBody)
-        divMain.appendChild(p)
-        TAGS.listPosts.appendChild(divMain)
+            p.append(spanUser)
+            p.append(spanBody)
+            divMain.appendChild(p)
+
+            return divMain
+        }
+
+        TAGS.listPosts.appendChild(getElement())
+
+        if (TAGS.chatClose.classList.contains("on")) {
+            const divMain = getElement()
+
+            divMain.id = `preview-post-${command.code}`
+            TAGS.listPostsChatClose.appendChild(divMain)
+        }
     }
 
     const addPost = (command) => {
@@ -146,6 +165,7 @@ export default function ControlModelView() {
 
     return {
         registerUser,
+        subscribeVerifyPlayingGame,
         setup,
         userTag,
         addUser,

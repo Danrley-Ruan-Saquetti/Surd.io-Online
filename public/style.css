@@ -8,10 +8,6 @@ html {
     font-size: 62.5%;
 }
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
     width: 100vw;
     height: 100vh;
     overflow: hidden;
@@ -21,6 +17,7 @@ body {
 button {
     transition: .2s;
 }
+#content-chat-close,
 button:hover {
     cursor: pointer;
 }
@@ -36,6 +33,9 @@ select {
 textarea {
     resize: none;
 }
+
+/* TOGGLE SCREEN */
+
 #ui.off {
     display: none;
 }
@@ -49,53 +49,65 @@ textarea {
     display: block;
 }
 
-/* MENU */
+/* TOGGLE CHAT */
 
-#ui {
+#chat.off {
+    display: none;
+}
+#chat-close.on {
     display: flex;
-    position: absolute;
-    height: 80vh;
-    width: 80vw;
 }
-.section-content {
-    padding: 2rem 1rem 2rem 1rem;
-    border-radius: 2rem;
-    background-color: #fff;
+
+/* BODY */
+
+#app {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.section-content div {
-    margin-bottom: 1rem;
+.users,
+.posts {
+    display: flex;
 }
-.section-content div:last-child {
-    margin-bottom: 0;
+
+/* CHAT */
+
+#chat {
+    position: relative;
+    margin: 0;
 }
-#list-posts,
-#list-posts-game,
-#list-users {
+.posts.this-post {
+    justify-content: right;
+}
+.posts.info {
+    justify-content: center;
+}
+#fill-text {
+    display: flex;
+    width: 100%;
+    height: 13%;
+}
+#body-post {
+    width: calc(75% - 1rem);
+    height: 100%;
+    border-radius: .7rem;
     padding: 1rem;
-    border-radius: 2rem;
-    overflow: auto;
-    overflow-x: hidden;
-    box-shadow: inset 0px 0px 15px rgba(0, 0, 0, .2);
+    box-shadow: inset 0 0 1rem rgba(0, 0, 0, .2);
 }
-.content-info {
+#send-post {
+    width: 25%;
     margin-left: 1rem;
-    margin-bottom: .8rem;
-    font-size: 1.8rem;
+    padding: 1rem;
+    align-items: center;
+    font-size: 1.5rem;
+    border-radius: .3rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, .2);
 }
-.posts,
-.users {
-    display: flex;
-    margin-bottom: .5rem;
-}
-
-/* MENU - USERS */
-
-#users-connected {
-    width: 20%;
-    min-width: 17.5rem;
-}
-#list-users {
-    height: 87%;
+#send-post:hover {
+    color: #fff;
+    background-color: dodgerblue;
 }
 .user-state {
     position: relative;
@@ -108,77 +120,84 @@ textarea {
 .user-state.user-playing {
     background-color: #ff0000;
 }
-#cont-users {
-    margin-left: 1rem;
+
+/* MENU */
+
+.section-content {
+    background-color: #fff;
+    padding: 2rem;
+    z-index: 15;
+    margin-right: .7rem;
+    border-radius: 2rem;
+}
+#cont-users-info,
+.content-info {
+    margin: 0 1rem 0 1rem;
+}
+.section-content div {
+    margin-bottom: 1rem;
+}
+.section-content div:last-child {
+    margin-bottom: 0;
+}
+.lists-content {
+    height: 83%;
+    border-radius: .7rem;
+    padding: 1rem;
+    box-shadow: inset 0 0 1rem rgba(0, 0, 0, .2);
+}
+.section-content div div {
+    margin-bottom: .5rem;
+}
+#ui {
+    display: flex;
+}
+#ui,
+#chat {
+    min-width: 35rem;
+    height: 45%;
+    min-height: 40rem;
+}
+
+/* MENU - USERS */
+
+#users-connected {
+    min-width: 20rem;
 }
 
 /* MENU - MAIN */
 
 #menu {
-    display: flex;
-    width: 22.7rem;
-    margin: 0 1% 0 1%;
-    flex-direction: column;
-    height: max-content;
+    height: min-content;
 }
-#username {
-    display: flex;
-}
-#username label {
-    margin-right: .7rem;
-}
-#name-tag {
-    min-width: 3rem;
-    border-bottom: 1px solid #000;
-}
+#name-tag,
 #list-servers {
     border-bottom: 1px solid #000;
 }
 #start-game {
-    font-size: 1.5rem;
-    padding: 1rem 0;
+    width: 100%;
+    padding: 1rem;
+    align-items: center;
     border-radius: .3rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    font-size: 1.5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, .2);
 }
 #start-game:hover {
-    background-color: dodgerblue;
     color: #fff;
+    background-color: dodgerblue;
 }
 
 /* MENU - CHAT */
 
-#chat-lobby {
-    width: 44%;
-    min-width: 35rem;
-}
 #list-posts {
-    height: 83%;
-}
-#fill-text {
-    display: flex;
-    width: 100%;
-    height: auto;
-}
-#body-post {
-    width: 80%;
-    height: auto;
-    padding: .3rem;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, .2);
-}
-#send-post {
-    width: 20%;
-}
-.posts.this-post {
-    justify-content: right;
-}
-.posts.info {
-    justify-content: center;
+    height: 75%;
 }
 
 /* RENDERER-GAME */
 
 #renderer-game {
     display: none;
+    position: absolute;
 }
 
 /* RENDERER-GAME - QUIT GAME */
@@ -187,9 +206,9 @@ textarea {
     position: fixed;
     top: 1rem;
     left: 1rem;
-    width: 10rem;
+    width: 13rem;
     height: 5rem;
-    border-radius: 1rem;
+    border-radius: .3rem;
     background-color: #fff;
     box-shadow: 0 0 1rem rgba(0, 0, 0, .2);
     overflow: hidden;
@@ -197,6 +216,7 @@ textarea {
 #quit-game {
     width: 100%;
     height: 100%;
+    font-size: 1.5rem;
 }
 #quit-game:hover {
     background-color: dodgerblue;
@@ -205,62 +225,43 @@ textarea {
 
 /* RENDERER-GAME - CANVAS */
 
-#canvas {
-    background-color: #000;
+#chat.game {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    min-width: 25rem;
+    height: 40%;
+    min-height: 35rem;
 }
 
 /* RENDERER-GAME - CHAT */
 
-#chat-game.active {
-    width: 3rem;
-    height: 3rem;
-}
-#chat-game {
-    position: fixed;
-    right: 2rem;
-    bottom: 2rem;
-    width: 25vw;
-    height: 25vw;
-    background-color: #fff;
-    overflow: hidden;
-    border-radius: 2rem;
-    padding: 2rem 1rem 2rem 1rem;
-}
-#open-chat {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-}
-#open-chat div {
-    margin-bottom: 1rem;
-}
-#open-chat div:last-child {
-    margin-bottom: 0;
-}
-#close-chat {
+#chat-close {
     display: none;
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    width: auto;
+    height: auto;
+    border-radius: 1rem;
+    z-index: 15;
 }
-#list-posts-game {
-    height: 83%;
-}
-#fill-text-game {
+#content-chat-close {
     display: flex;
-    width: 100%;
-    height: auto;
-}
-#body-post-game {
-    width: 80%;
-    height: auto;
-    padding: .3rem;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, .2);
-}
-#send-post-game {
-    width: 20%;
-}
-.posts-game.this-post {
-    justify-content: right;
-}
-.posts-game.info {
+    width: 5rem;
+    height: 5rem;
+    transform: translateY(.5rem);
     justify-content: center;
+    background-color: #fff;
+}
+#content-chat-close p {
+    font-size: 3rem;
+}
+#list-posts-chat-close {
+    width: auto;
+    max-width: 30rem;
+    height: auto;
+    max-height: 35rem;
+    background-color: #fff;
+    box-shadow: inset 0 0 1rem rgba(0, 0, 0, .2);
 }

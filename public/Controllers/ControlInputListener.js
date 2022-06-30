@@ -2,11 +2,15 @@ const TAGS = {
     ui: document.getElementById("ui"),
     rendererGame: document.getElementById("renderer-game"),
     nameTag: document.getElementById("name-tag"),
+    chat: document.getElementById("chat"),
+    chatClose: document.getElementById("chat-close"),
     listServer: document.getElementById("list-servers"),
     startGame: document.getElementById("start-game"),
     quitGame: document.getElementById("quit-game"),
     bodyPost: document.getElementById("body-post"),
     sendPost: document.getElementById("send-post"),
+    listPostsChatClose: document.getElementById("list-posts-chat-close"),
+    contentChatClose: document.getElementById("content-chat-close"),
 }
 
 export default function ControlInputListener() {
@@ -16,9 +20,19 @@ export default function ControlInputListener() {
     }
 
     const observers = []
+    let clearListPosts = () => {}
+    let verifyPlayingGame = () => { return true }
 
     const subscribeObserver = (observerFunction) => {
         observers.push(observerFunction)
+    }
+
+    const subscribeClearListPosts = (command) => {
+        clearListPosts = command
+    }
+
+    const subscribeVerifyPlayingGame = (command) => {
+        verifyPlayingGame = command
     }
 
     const notifyAll = (type, command) => {
@@ -36,6 +50,7 @@ export default function ControlInputListener() {
         TAGS.sendPost.addEventListener("click", (ev) => sendPost())
         TAGS.startGame.addEventListener("click", (ev) => startGame())
         TAGS.quitGame.addEventListener("click", (ev) => quitGame())
+        TAGS.contentChatClose.addEventListener("click", (ev) => toggleChat())
         TAGS.nameTag.addEventListener("focusout", (ev) => renameUser())
         document.addEventListener("keydown", (ev) => keyPress(ev))
     }
@@ -43,10 +58,19 @@ export default function ControlInputListener() {
     const toggleScreen = () => {
         TAGS.ui.classList.toggle("off")
         TAGS.rendererGame.classList.toggle("on")
+        TAGS.chat.classList.toggle("game")
+        clearListPosts()
     }
 
     const toggleChat = () => {
+        if (verifyPlayingGame()) {
+            TAGS.chat.classList.toggle("off")
+            TAGS.chatClose.classList.toggle("on")
 
+            if (!TAGS.chat.classList.contains("off")) {
+                TAGS.listPostsChatClose.innerHTML = ""
+            }
+        }
     }
 
     const keyPress = (ev) => {
@@ -87,6 +111,10 @@ export default function ControlInputListener() {
         const server = String(TAGS.listServer.value).substring(7)
         notifyAll("user-quit-game", { serverCode: server, code: user.code })
         toggleScreen()
+        if (verifyPlayingGame()) {
+            TAGS.chat.classList.toggle("off", false)
+            TAGS.chatClose.classList.toggle("on", false)
+        }
     }
 
     const pressEnter = () => {
@@ -97,5 +125,7 @@ export default function ControlInputListener() {
         subscribeObserver,
         registerUser,
         initialComponents,
+        subscribeClearListPosts,
+        subscribeVerifyPlayingGame,
     }
 }

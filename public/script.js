@@ -38,6 +38,16 @@ socket.on("connect", () => {
         controlInputListener.subscribeObserver((type, command) => {
             socket.emit(type, command)
         })
+        controlInputListener.subscribeClearListPosts(() => {
+            document.getElementById("list-posts").innerHTML = ""
+            document.getElementById("body-post").value = ""
+        })
+        controlInputListener.subscribeVerifyPlayingGame(() => {
+            return controlMain.getState().users[userCode].playingGame
+        })
+        controlModelView.subscribeVerifyPlayingGame(() => {
+            return controlMain.getState().users[userCode].playingGame
+        })
     })
 
     socket.on("user-connected", (command) => {
@@ -69,6 +79,9 @@ socket.on("connect", () => {
     })
 
     socket.on("user-send-post", (command) => {
+        if (command.chatCode != controlMain.getState().users[userCode].serverConnected &&
+            (controlMain.getState().users[userCode].serverConnected != null || command.chatCode != "11111111")) { return }
+
         controlMain.createPost(command)
         controlModelView.addPost(command)
     })
