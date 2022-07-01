@@ -294,6 +294,9 @@ textarea {
     border-radius: .3rem;
     margin-top: 1rem;
 }
+#content-posts p {
+    display: flex;
+}
 #content-notification {
     display: none;
     position: absolute;
@@ -316,12 +319,24 @@ textarea {
     width: 100%;
     height: 100%;
 }
-::-webkit-scrollbar {
-    width: .5rem;
-    border-top-right-radius: .3rem;
-    border-bottom-right-radius: .3rem;
-}
-::-webkit-scrollbar-thumb {
+#chat-game-info {
+    position: absolute;
+    right: 0;
+    display: none;
+    width: auto;
+    height: auto;
+    background-color: #fff;
     border-radius: .3rem;
-    background-color: #808080;
+    padding: 1rem;
+    font-size: 1.3rem;
+    transform: translateY(-6.5rem);
+}
+#chat.game #chat-game-info {
+    display: block;
+}
+
+/* OTHERS */
+
+::-webkit-scrollbar {
+    display: none;
 }
