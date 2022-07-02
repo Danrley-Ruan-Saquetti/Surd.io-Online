@@ -4,8 +4,8 @@ import GeneratedCode from "./GeneratedCode.js"
 export default function ControlPost() {
     const controlStatePost = StatePost()
 
-    const createPost = (command, posts = {}) => {
-        const code = command.code ? command.code : GeneratedCode(posts).code
+    const createPost = (command) => {
+        const code = command.code ? command.code : GeneratedCode(controlStatePost.posts).code
         const post = {
             code: code,
             userCode: command.userCode,

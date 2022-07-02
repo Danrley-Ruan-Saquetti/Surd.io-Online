@@ -62,6 +62,11 @@ export default function ControlInputListener() {
         TAGS.ui.classList.toggle("off")
         TAGS.rendererGame.classList.toggle("on")
         TAGS.chat.classList.toggle("game")
+
+        if (TAGS.ui.classList.contains("off")) {
+            TAGS.listPostsChatClose.innerHTML = ""
+            TAGS.contentNotifications.classList.toggle("on", false)
+        }
         clearListPosts()
     }
 

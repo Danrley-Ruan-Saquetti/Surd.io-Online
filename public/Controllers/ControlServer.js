@@ -4,8 +4,8 @@ import GeneratedCode from "./GeneratedCode.js"
 export default function ControlServer() {
     const controlStateServer = StateServer()
 
-    const createServer = (command, servers = {}) => {
-        const code = command.code ? command.code : GeneratedCode(servers).code
+    const createServer = (command) => {
+        const code = command.code ? command.code : GeneratedCode(controlStateServer.servers).code
         const server = {
             code: code,
             initial: command.initial,

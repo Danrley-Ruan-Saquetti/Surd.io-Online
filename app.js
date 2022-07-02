@@ -28,6 +28,7 @@ server.listen(port, () => {
         console.log(`Console: Server ${initial} created!`);
         const code = controlMain.createServer({ initial }).code
         controlMain.createChat({ code })
+        controlMain.createGame({ code })
     })
 })
 

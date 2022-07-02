@@ -4,8 +4,8 @@ import GeneratedCode from "./../Controllers/GeneratedCode.js"
 export default function ControlChat() {
     const controlStateChat = StateChat()
 
-    const crateChat = (command, chats = {}) => {
-        const code = command.code ? command.code : GeneratedCode(chats).code
+    const crateChat = (command) => {
+        const code = command.code ? command.code : GeneratedCode(controlStateChat.chats).code
         const chat = {
             code: code,
         }

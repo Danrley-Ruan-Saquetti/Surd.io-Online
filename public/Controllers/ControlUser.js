@@ -4,8 +4,8 @@ import GeneratedCode from "./GeneratedCode.js"
 export default function ControlUser() {
     const controlStateUser = StateUser()
 
-    const createUser = (command, users = {}) => {
-        const code = command.code ? command.code : GeneratedCode(users).code
+    const createUser = (command) => {
+        const code = command.code ? command.code : GeneratedCode(controlStateUser.users).code
         const user = {
             id: command.id,
             code: code,
