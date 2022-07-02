@@ -8,7 +8,7 @@ const socket = io()
 const controlMain = ControlMain()
 const controlInputListener = ControlInputListener()
 const controlModelView = ControlModelView()
-const controlRendererGame = ControlRendererGame({}, document.getElementById("canvas"))
+const controlRendererGame = ControlRendererGame(document.getElementById("canvas"))
 
 let userCode
 
@@ -48,6 +48,7 @@ socket.on("connect", () => {
             return controlMain.getState().users[userCode].playingGame
         })
         controlInputListener.initialComponents()
+        controlRendererGame.registerUser({ code: userCode })
     })
 
     socket.on("user-connected", (command) => {
@@ -71,11 +72,18 @@ socket.on("connect", () => {
     socket.on("user-start-game", (command) => {
         controlMain.userStartGame(command)
         controlModelView.userStartGame(command)
+        if (command.code == userCode) {
+            controlRendererGame.registerState(controlMain.getStateGame())
+            controlRendererGame.start()
+        }
     })
 
     socket.on("user-quit-game", (command) => {
         controlMain.userQuitGame(command)
         controlModelView.userQuitGame(command)
+        if (command.code == userCode) {
+            controlRendererGame.quit()
+        }
     })
 
     socket.on("user-send-post", (command) => {

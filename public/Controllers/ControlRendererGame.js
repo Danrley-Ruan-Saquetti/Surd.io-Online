@@ -1,16 +1,19 @@
-export default function ControlRendererGame(gameM, canvasM) {
-    const game = gameM
-
+export default function ControlRendererGame(canvasM) {
     const canvas = canvasM
     const ctx = canvas.getContext("2d")
 
+    let state
     let user
+    let runningGame
+    let playingGame = false
 
     const registerUser = (command) => {
         user = command.user
     }
 
-    let runningGame
+    const registerState = (command) => {
+        state = command
+    }
 
     const DIMENSION_CANVAS = {
         width: () => { return canvas.innerWidth },
@@ -28,23 +31,34 @@ export default function ControlRendererGame(gameM, canvasM) {
     }
 
     const start = () => {
+        playingGame = true
         animate()
     }
 
     const quit = () => {
+        playingGame = false
+    }
+
+    const draw = () => {
 
     }
 
-
+    let a = 0
     const animate = () => {
+        if (DIMENSION_CANVAS.height() != DIMENSION_WINDOW.height() || DIMENSION_CANVAS.width() != DIMENSION_WINDOW.width()) { resizeCanvas() }
 
-        runningGame = requestAnimationFrame(animate)
+        a++
+        if (a % 200 == 0) {
+            console.log(state);
+        }
+
+        if (playingGame) { runningGame = requestAnimationFrame(animate) }
     }
-
-    resizeCanvas()
 
     return {
         start,
+        quit,
+        registerState,
         registerUser
     }
 }

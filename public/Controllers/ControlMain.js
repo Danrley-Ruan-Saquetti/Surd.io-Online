@@ -54,6 +54,7 @@ export default function ControlMain() {
     const removeUser = (command) => {
         notifyAll("user-disconnected", command)
         controlUser.removeUser(command)
+        controlGame.removePlayer(command)
     }
 
     const renameUser = (command) => {
@@ -116,6 +117,12 @@ export default function ControlMain() {
         controlGame.acceptKey(command)
     }
 
+    const getStateGame = (command) => {
+        return {
+            players: controlGame.getPlayers()
+        }
+    }
+
     const getState = () => {
         return {
             users: controlUser.getUsers(),
@@ -128,7 +135,6 @@ export default function ControlMain() {
     }
 
     return {
-        getState,
         setup,
         subscribeObserver,
         createUser,
@@ -143,5 +149,7 @@ export default function ControlMain() {
         acceptKey,
         createPost,
         getPostsChat,
+        getStateGame,
+        getState,
     }
 }

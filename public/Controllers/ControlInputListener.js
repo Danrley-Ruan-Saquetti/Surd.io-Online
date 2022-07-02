@@ -24,6 +24,7 @@ export default function ControlInputListener() {
 
     const MAPPING_KEYS = {
         keyPress: (command) => {
+            if (!verifyPlayingGame()) { return }
             if (command.keyCode == 13) {
                 toggleChat()
                 return
@@ -31,13 +32,14 @@ export default function ControlInputListener() {
             notifyAll("move-player", { code: user.code, key: command.key, value: true })
         },
         keyUp: (command) => {
+            if (!verifyPlayingGame()) { return }
             notifyAll("move-player", { code: user.code, key: command.key, value: false })
         },
     }
 
     const observers = []
     let clearListPosts = () => {}
-    let verifyPlayingGame = () => { return true }
+    let verifyPlayingGame = () => { return false }
 
     const subscribeObserver = (observerFunction) => {
         observers.push(observerFunction)
