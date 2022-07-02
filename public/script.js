@@ -13,8 +13,10 @@ const controlRendererGame = ControlRendererGame({}, document.getElementById("can
 let userCode
 
 socket.on("connect", () => {
+    let chatCode
     socket.on("setup", (command) => {
         userCode = command.code
+        chatCode = command.chatCode
         controlMain.setup(command.state)
 
         const user = {
@@ -78,7 +80,7 @@ socket.on("connect", () => {
 
     socket.on("user-send-post", (command) => {
         if (command.chatCode != controlMain.getState().users[userCode].serverConnected &&
-            (controlMain.getState().users[userCode].serverConnected != null || command.chatCode != "11111111")) { return }
+            (controlMain.getState().users[userCode].serverConnected != null || command.chatCode != chatCode)) { return }
 
         controlMain.createPost(command)
         controlModelView.addPost(command)

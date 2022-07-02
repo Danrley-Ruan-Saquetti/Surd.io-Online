@@ -19,6 +19,7 @@ export default function ControlPlayer() {
             dimension: { width: DIMENSION_PLAYER, height: DIMENSION_PLAYER },
             position: { x: Math.random() * (state.width - DIMENSION_PLAYER), y: Math.random() * (state.height - DIMENSION_PLAYER) },
             speed: { x: 0, y: 0 },
+            maxSpeed: 3,
             key: { UP: false, DOWN: false, RIGHT: false, LEFT: false },
             lastKey: { vertical: "", horizontal: "" }
         }
@@ -30,16 +31,30 @@ export default function ControlPlayer() {
         controlStatePlayer.removePlayer(command)
     }
 
-    const updatePosition = (command) => {
-        controlStatePlayer.updatePosition(command)
+    const movePlayer = (command) => {
+        let _playerMoved = false
+        if (controlStatePlayer.players[command.code].key.UP && controlStatePlayer.players[command.code].lastKey.vertical == "UP") {
+            controlStatePlayer.movePlayer["w"](command)
+            _playerMoved = true
+        } else if (controlStatePlayer.players[command.code].key.DOWN && controlStatePlayer.players[command.code].lastKey.vertical == "DOWN") {
+            controlStatePlayer.movePlayer["s"](command)
+            _playerMoved = true
+        }
+        if (controlStatePlayer.players[command.code].key.RIGHT && controlStatePlayer.players[command.code].lastKey.horizontal == "RIGHT") {
+            controlStatePlayer.movePlayer["d"](command)
+            _playerMoved = true
+        } else if (controlStatePlayer.players[command.code].key.LEFT && controlStatePlayer.players[command.code].lastKey.horizontal == "LEFT") {
+            controlStatePlayer.movePlayer["a"](command)
+            _playerMoved = true
+        }
+
+        return _playerMoved
     }
 
     const updateKey = (command) => {
-        controlStatePlayer.updateKey(command)
-    }
-
-    const updateLatsKey = (command) => {
-        controlStatePlayer.updateLatsKey(command)
+        if (controlStatePlayer.updateKey[command.key]) {
+            controlStatePlayer.updateKey[command.key](command)
+        }
     }
 
     const getPlayers = () => {
@@ -49,9 +64,8 @@ export default function ControlPlayer() {
     return {
         createPlayer,
         removePlayer,
-        updatePosition,
+        movePlayer,
         updateKey,
-        updateLatsKey,
         getPlayers,
     }
 }

@@ -33,23 +33,19 @@ export default function ControlGame() {
 
     // Player
     const createPlayer = (command) => {
-        controlPlayer.createPlayer(command, state)
+        controlPlayer.createPlayer(command, state.dimension)
     }
 
     const removePlayer = (command) => {
         controlPlayer.removePlayer(command)
     }
 
-    const updatePosition = (command) => {
-        controlPlayer.updatePosition(command)
+    const movePlayer = (command) => {
+        controlPlayer.movePlayer(command)
     }
 
-    const updateKey = (command) => {
+    const acceptKey = (command) => {
         controlPlayer.updateKey(command)
-    }
-
-    const updateLatsKey = (command) => {
-        controlPlayer.updateLatsKey(command)
     }
 
     const getGames = () => {
@@ -65,6 +61,7 @@ export default function ControlGame() {
         createGame,
         createPlayer,
         removePlayer,
+        acceptKey,
         getGames,
         getPlayers,
     }

@@ -112,6 +112,10 @@ export default function ControlMain() {
         controlGame.createGame(command)
     }
 
+    const acceptKey = (command) => {
+        controlGame.acceptKey(command)
+    }
+
     const getState = () => {
         return {
             users: controlUser.getUsers(),
@@ -135,8 +139,9 @@ export default function ControlMain() {
         userQuitGame,
         createServer,
         createChat,
+        createGame,
+        acceptKey,
         createPost,
         getPostsChat,
-        createGame,
     }
 }

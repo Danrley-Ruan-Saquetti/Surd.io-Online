@@ -22,6 +22,19 @@ export default function ControlInputListener() {
         name: () => { return "" }
     }
 
+    const MAPPING_KEYS = {
+        keyPress: (command) => {
+            if (command.keyCode == 13) {
+                toggleChat()
+                return
+            }
+            notifyAll("move-player", { code: user.code, key: command.key, value: true })
+        },
+        keyUp: (command) => {
+            notifyAll("move-player", { code: user.code, key: command.key, value: false })
+        },
+    }
+
     const observers = []
     let clearListPosts = () => {}
     let verifyPlayingGame = () => { return true }
@@ -55,7 +68,8 @@ export default function ControlInputListener() {
         TAGS.quitGame.addEventListener("click", (ev) => quitGame())
         TAGS.contentChatClose.addEventListener("click", (ev) => toggleChat())
         TAGS.nameTag.addEventListener("focusout", (ev) => renameUser())
-        document.addEventListener("keydown", (ev) => keyPress(ev))
+        document.addEventListener("keydown", (ev) => MAPPING_KEYS.keyPress(ev))
+        document.addEventListener("keyup", (ev) => MAPPING_KEYS.keyUp(ev))
     }
 
     const toggleScreen = () => {
@@ -81,14 +95,6 @@ export default function ControlInputListener() {
                 TAGS.contentNotifications.classList.toggle("on", false)
                 TAGS.listPosts.scrollTop = TAGS.listPosts.scrollHeight
             }
-        }
-    }
-
-    const keyPress = (ev) => {
-        switch (ev.keyCode) {
-            case 13:
-                toggleChat()
-                break;
         }
     }
 

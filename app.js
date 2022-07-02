@@ -50,7 +50,7 @@ sockets.on("connection", (socket) => {
 
     const code = controlMain.createUser({ id }).code
 
-    socket.emit("setup", { state: controlMain.getState(), code })
+    socket.emit("setup", { state: controlMain.getState(), code, chatCode: CODE_CHAT_MAIN })
 
     systemSendPost({ userCode: code, body: `User connected.` })
 
@@ -112,5 +112,9 @@ sockets.on("connection", (socket) => {
             userCode: code,
             body: `User quit server.`
         })
+    })
+
+    socket.on("move-player", (command) => {
+        controlMain.acceptKey(command)
     })
 })
