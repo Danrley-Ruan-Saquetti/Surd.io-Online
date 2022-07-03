@@ -12,6 +12,9 @@ export default function ControlGame() {
 
     const observers = []
 
+    const FPS = 1000 / 60
+    let updateInterval
+
     const subscribeObserver = (observerFunction) => {
         observers.push(observerFunction)
     }
@@ -31,6 +34,23 @@ export default function ControlGame() {
         controlStateGame.createGame(game)
     }
 
+    // Running game
+    const start = () => {
+        updateInterval = setInterval(() => updateGame(), FPS)
+    }
+
+    const updateGame = () => {
+        movePlayers()
+    }
+
+    const movePlayers = () => {
+        Object.keys(controlPlayer.getPlayers()).map((i) => {
+            const player = controlPlayer.getPlayers()[i]
+
+            movePlayer(player)
+        })
+    }
+
     // Player
     const createPlayer = (command) => {
         const player = controlPlayer.createPlayer(command, MAP)
@@ -43,7 +63,13 @@ export default function ControlGame() {
     }
 
     const movePlayer = (command) => {
-        controlPlayer.movePlayer(command)
+        if (controlPlayer.movePlayer(command)) {
+            notifyAll("player-move", { code: command.code, position: command.position })
+        }
+    }
+
+    const setPositionPlayer = (command) => {
+        controlPlayer.setPositionPlayer(command)
     }
 
     const acceptKey = (command) => {
@@ -63,6 +89,7 @@ export default function ControlGame() {
         createGame,
         createPlayer,
         removePlayer,
+        setPositionPlayer,
         acceptKey,
         getGames,
         getPlayers,

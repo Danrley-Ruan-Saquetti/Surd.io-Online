@@ -22,10 +22,10 @@ server.listen(port, () => {
 
     controlMain.createChat({ code: CODE_CHAT_MAIN })
 
-    const INITIALS = [`A`, `B`, `C`, `D`, `E`]
+    const INITIALS = [`A`]
 
     INITIALS.forEach((initial) => {
-        console.log(`Console: Server ${initial} created!`);
+        console.log(`Console: Game start in the Server ${initial}!`);
         const code = controlMain.createServer({ initial }).code
         controlMain.createChat({ code })
         controlMain.createGame({ code })
@@ -114,7 +114,7 @@ sockets.on("connection", (socket) => {
         })
     })
 
-    socket.on("move-player", (command) => {
+    socket.on("player-keypress", (command) => {
         controlMain.acceptKey(command)
     })
 })

@@ -139,9 +139,12 @@ export default function ControlMain() {
         removePlayer(command)
     }
 
-
     const acceptKey = (command) => {
         controlGame.acceptKey(command)
+    }
+
+    const setPositionPlayer = (command) => {
+        controlGame.setPositionPlayer(command)
     }
 
     // State
@@ -176,6 +179,7 @@ export default function ControlMain() {
         userStartGame,
         userQuitGame,
         acceptKey,
+        setPositionPlayer,
         createPost,
         getPostsChat,
         getStateGame,

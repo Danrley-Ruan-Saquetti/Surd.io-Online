@@ -55,15 +55,13 @@ const ControlAction = () => {
     const userConnected = (command) => {
         if (socket.id == command.id) { return }
         const code = controlMain.createUser(command).code
-        controlModelView.addUser(controlMain.getState().users[code])
-        controlModelView.setContUsers({ contUsers: controlMain.getContUsers() })
+        controlModelView.addUser(controlMain.getState().users[code], { contUsers: controlMain.getContUsers() })
     }
 
     const userDisconnected = (command) => {
         const serverCode = controlMain.getState().users[command.code].playingGame ? controlMain.getState().users[command.code].serverConnected : null
         controlMain.removeUser(command)
-        controlModelView.removeUser(command)
-        controlModelView.setContUsers({ contUsers: controlMain.getContUsers() })
+        controlModelView.removeUser(command, { contUsers: controlMain.getContUsers() })
         if (serverCode != null) {
             controlModelView.updatePlayersContServer(controlMain.getState().servers[serverCode])
         }
@@ -76,8 +74,7 @@ const ControlAction = () => {
 
     const userStartGame = (command) => {
         controlMain.userStartGame(command)
-        controlModelView.userStartGame(command)
-        controlModelView.updatePlayersContServer(controlMain.getState().servers[command.serverCode])
+        controlModelView.userStartGame(command, controlMain.getState().servers[command.serverCode])
         if (command.code == userCode) {
             controlRendererGame.registerState(controlMain.getStateGame())
             controlRendererGame.start()
@@ -86,8 +83,7 @@ const ControlAction = () => {
 
     const userQuitGame = (command) => {
         controlMain.userQuitGame(command)
-        controlModelView.userQuitGame(command)
-        controlModelView.updatePlayersContServer(controlMain.getState().servers[command.serverCode])
+        controlModelView.userQuitGame(command, controlMain.getState().servers[command.serverCode])
         if (command.code == userCode) {
             controlRendererGame.quit()
         }
@@ -101,6 +97,12 @@ const ControlAction = () => {
         controlModelView.addPost(command)
     }
 
+    const setPositionPlayer = (command) => {
+        controlMain.setPositionPlayer(command)
+
+        console.log(command);
+    }
+
     return {
         setup,
         userConnected,
@@ -109,6 +111,7 @@ const ControlAction = () => {
         userStartGame,
         userQuitGame,
         userSendPost,
+        setPositionPlayer,
     }
 }
 
@@ -141,5 +144,9 @@ socket.on("connect", () => {
 
     socket.on("user-send-post", (command) => {
         controlAction.userSendPost(command)
+    })
+
+    socket.on("player-move", (command) => {
+        controlAction.setPositionPlayer(command)
     })
 })

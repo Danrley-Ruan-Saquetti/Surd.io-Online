@@ -29,11 +29,11 @@ export default function ControlInputListener() {
                 toggleChat()
                 return
             }
-            notifyAll("move-player", { code: user.code, key: command.key, value: true })
+            notifyAll("player-keypress", { code: user.code, key: command.key, value: true })
         },
         keyUp: (command) => {
             if (!verifyPlayingGame()) { return }
-            notifyAll("move-player", { code: user.code, key: command.key, value: false })
+            notifyAll("player-keypress", { code: user.code, key: command.key, value: false })
         },
     }
 

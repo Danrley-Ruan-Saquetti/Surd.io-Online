@@ -9,18 +9,23 @@ export default function StatePlayer() {
         delete players[command.code]
     }
 
+    const setPositionPlayer = (command) => {
+        players[command.code].position.x = command.position.x
+        players[command.code].position.y = command.position.y
+    }
+
     const movePlayer = {
         w: (command) => {
-            players[command.code].position.y -= players[command.code].maxSpeed
+            players[command.code].position.y -= players[command.code].speed
         },
         s: (command) => {
-            players[command.code].position.y += players[command.code].maxSpeed
+            players[command.code].position.y += players[command.code].speed
         },
         d: (command) => {
-            players[command.code].position.x += players[command.code].maxSpeed
+            players[command.code].position.x += players[command.code].speed
         },
         a: (command) => {
-            players[command.code].position.x -= players[command.code].maxSpeed
+            players[command.code].position.x -= players[command.code].speed
         },
     }
 
@@ -47,6 +52,7 @@ export default function StatePlayer() {
         players,
         createPlayer,
         removePlayer,
+        setPositionPlayer,
         movePlayer,
         updateKey,
     }

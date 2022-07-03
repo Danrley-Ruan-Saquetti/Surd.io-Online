@@ -11,21 +11,22 @@ export default function ControlPlayer() {
         const player = {
             code: code,
             serverCode: command.serverConnected ? command.serverConnected : command.serverCode ? command.serverCode : null,
-            name: command.name,
+            name: command.name ? command.name : `Guest_${code.substring(0, 5)}`,
             level: command.level ? command.level : 1,
             xp: command.xp ? command.xp : 0,
             points: command.points ? command.points : 0,
             health: command.health ? command.health : 100,
             maxHealth: command.maxHealth ? command.maxHealth : 100,
             dimension: { width: DIMENSION_PLAYER, height: DIMENSION_PLAYER },
-            position: command.position ? command.position : { x: Math.random() * (map.dimension.width - DIMENSION_PLAYER) + DIMENSION_PLAYER, y: Math.random() * (map.dimension.height - DIMENSION_PLAYER) + DIMENSION_PLAYER }, // { x: (map.dimension.width / 2) + Math.round() * 100, y: (map.dimension.height / 2) + Math.round() * 100 }, 
-            speed: { x: 0, y: 0 },
-            maxSpeed: command.maxSpeed ? command.maxSpeed : 3,
+            position: command.position ? command.position : { x: Math.round(Math.random() * (map.dimension.width - DIMENSION_PLAYER)) + DIMENSION_PLAYER, y: Math.round(Math.random() * (map.dimension.height - DIMENSION_PLAYER)) + DIMENSION_PLAYER }, // { x: (map.dimension.width / 2) + Math.round() * 100, y: (map.dimension.height / 2) + Math.round() * 100 }, 
+            speed: command.speed ? command.speed : 3,
             key: { UP: false, DOWN: false, RIGHT: false, LEFT: false },
             lastKey: { vertical: "", horizontal: "" }
         }
 
         controlStatePlayer.createPlayer(player)
+
+        console.log(player);
 
         return player
     }
@@ -60,6 +61,10 @@ export default function ControlPlayer() {
         }
     }
 
+    const setPositionPlayer = (command) => {
+        controlStatePlayer.setPositionPlayer(command)
+    }
+
     const getPlayers = () => {
         return controlStatePlayer.players
     }
@@ -69,6 +74,7 @@ export default function ControlPlayer() {
         removePlayer,
         movePlayer,
         updateKey,
+        setPositionPlayer,
         getPlayers,
     }
 }

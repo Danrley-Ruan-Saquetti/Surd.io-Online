@@ -70,13 +70,15 @@ export default function ControlModelView() {
         TAGS.listUsers.appendChild(divMain)
     }
 
-    const addUser = (command) => {
+    const addUser = (command, usersCont) => {
         addUserList(command)
+        setContUsers(usersCont)
     }
 
-    const removeUser = (command) => {
+    const removeUser = (command, usersCont) => {
         const tag = document.getElementById(`user-${command.code}`)
         tag.remove()
+        setContUsers(usersCont)
     }
 
     const renameUser = (command) => {
@@ -85,16 +87,20 @@ export default function ControlModelView() {
         renameUserPost(command)
     }
 
-    const userStartGame = (command) => {
+    const userStartGame = (command, server) => {
         const tag = document.getElementById(`state-user-${command.code}`)
 
         tag.classList.toggle(`user-playing`, true)
+
+        updatePlayersContServer(server)
     }
 
-    const userQuitGame = (command) => {
+    const userQuitGame = (command, server) => {
         const tag = document.getElementById(`state-user-${command.code}`)
 
         tag.classList.toggle(`user-playing`, false)
+
+        updatePlayersContServer(server)
     }
 
     const setContUsers = (command) => {
