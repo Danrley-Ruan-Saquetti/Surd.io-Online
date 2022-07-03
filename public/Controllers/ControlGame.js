@@ -6,7 +6,7 @@ export default function ControlGame() {
     const controlStateGame = StateGame()
     const controlPlayer = ControlPlayer()
 
-    const state = {
+    const MAP = {
         dimension: { width: 10000, height: 10000 }
     }
 
@@ -33,7 +33,9 @@ export default function ControlGame() {
 
     // Player
     const createPlayer = (command) => {
-        controlPlayer.createPlayer(command, state.dimension)
+        const player = controlPlayer.createPlayer(command, MAP)
+
+        return player
     }
 
     const removePlayer = (command) => {
@@ -64,5 +66,6 @@ export default function ControlGame() {
         acceptKey,
         getGames,
         getPlayers,
+        MAP,
     }
 }

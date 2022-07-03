@@ -93,6 +93,7 @@ export default function ControlModelView() {
 
     const userQuitGame = (command) => {
         const tag = document.getElementById(`state-user-${command.code}`)
+
         tag.classList.toggle(`user-playing`, false)
     }
 
@@ -103,11 +104,28 @@ export default function ControlModelView() {
     // Server
     const addServerList = (command) => {
         const option = document.createElement("option")
+        const spanServerName = document.createElement("span")
+        const spanPlayersConnected = document.createElement("span")
+        const spanPlayersContInfo = document.createElement("span")
+        const spanPlayersCont = document.createElement("span")
 
         option.value = `server-${command.code}`
-        option.innerHTML = command.name
+        spanServerName.innerHTML = command.name
+        spanPlayersContInfo.innerText = ` - Players online `
+        spanPlayersCont.innerHTML = command.playersConnected
+        spanPlayersCont.id = `players-in-server-${command.code}`
 
+        spanPlayersConnected.appendChild(spanPlayersContInfo)
+        spanPlayersConnected.appendChild(spanPlayersCont)
+        option.appendChild(spanServerName)
+        option.appendChild(spanPlayersConnected)
         TAGS.listServers.appendChild(option)
+    }
+
+    const updatePlayersContServer = (command) => {
+        const tag = document.getElementById(`players-in-server-${command.code}`)
+
+        tag.innerHTML = command.playersConnected
     }
 
     // Posts - Lobby
@@ -181,6 +199,7 @@ export default function ControlModelView() {
         renameUser,
         userStartGame,
         setContUsers,
+        updatePlayersContServer,
         addPost,
         removePost,
         userQuitGame,

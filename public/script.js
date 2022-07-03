@@ -5,16 +5,17 @@ import ControlRendererGame from "./Controllers/ControlRendererGame.js"
 
 const socket = io()
 
-const controlMain = ControlMain()
-const controlInputListener = ControlInputListener()
-const controlModelView = ControlModelView()
-const controlRendererGame = ControlRendererGame(document.getElementById("canvas"))
-
 let userCode
 
-socket.on("connect", () => {
+const ControlAction = () => {
+    const controlMain = ControlMain()
+    const controlInputListener = ControlInputListener()
+    const controlModelView = ControlModelView()
+    const controlRendererGame = ControlRendererGame(document.getElementById("canvas"))
+
     let chatCode
-    socket.on("setup", (command) => {
+
+    const setup = (command) => {
         userCode = command.code
         chatCode = command.chatCode
         controlMain.setup(command.state)
@@ -49,48 +50,96 @@ socket.on("connect", () => {
         })
         controlInputListener.initialComponents()
         controlRendererGame.registerUser({ code: userCode })
-    })
+    }
 
-    socket.on("user-connected", (command) => {
+    const userConnected = (command) => {
         if (socket.id == command.id) { return }
         const code = controlMain.createUser(command).code
         controlModelView.addUser(controlMain.getState().users[code])
         controlModelView.setContUsers({ contUsers: controlMain.getContUsers() })
-    })
+    }
 
-    socket.on("user-disconnected", (command) => {
+    const userDisconnected = (command) => {
+        const serverCode = controlMain.getState().users[command.code].playingGame ? controlMain.getState().users[command.code].serverConnected : null
         controlMain.removeUser(command)
         controlModelView.removeUser(command)
         controlModelView.setContUsers({ contUsers: controlMain.getContUsers() })
-    })
+        if (serverCode != null) {
+            controlModelView.updatePlayersContServer(controlMain.getState().servers[serverCode])
+        }
+    }
 
-    socket.on("user-rename", (command) => {
+    const userRename = (command) => {
         controlMain.renameUser(command)
         controlModelView.renameUser({ code: command.code, name: command.newName })
-    })
+    }
 
-    socket.on("user-start-game", (command) => {
+    const userStartGame = (command) => {
         controlMain.userStartGame(command)
         controlModelView.userStartGame(command)
+        controlModelView.updatePlayersContServer(controlMain.getState().servers[command.serverCode])
         if (command.code == userCode) {
             controlRendererGame.registerState(controlMain.getStateGame())
             controlRendererGame.start()
         }
-    })
+    }
 
-    socket.on("user-quit-game", (command) => {
+    const userQuitGame = (command) => {
         controlMain.userQuitGame(command)
         controlModelView.userQuitGame(command)
+        controlModelView.updatePlayersContServer(controlMain.getState().servers[command.serverCode])
         if (command.code == userCode) {
             controlRendererGame.quit()
         }
-    })
+    }
 
-    socket.on("user-send-post", (command) => {
+    const userSendPost = (command) => {
         if (command.chatCode != controlMain.getState().users[userCode].serverConnected &&
             (controlMain.getState().users[userCode].serverConnected != null || command.chatCode != chatCode)) { return }
 
         controlMain.createPost(command)
         controlModelView.addPost(command)
+    }
+
+    return {
+        setup,
+        userConnected,
+        userDisconnected,
+        userRename,
+        userStartGame,
+        userQuitGame,
+        userSendPost,
+    }
+}
+
+socket.on("connect", () => {
+    const controlAction = ControlAction()
+
+    socket.on("setup", (command) => {
+        controlAction.setup(command)
+    })
+
+    socket.on("user-connected", (command) => {
+        controlAction.userConnected(command)
+    })
+
+    socket.on("user-disconnected", (command) => {
+        controlAction.userDisconnected(command)
+    })
+
+    socket.on("user-rename", (command) => {
+        controlAction.userRename(command)
+    })
+
+    socket.on("user-start-game", (command) => {
+        controlAction.userStartGame(command)
+    })
+
+    socket.on("user-quit-game", (command) => {
+        controlAction.userQuitGame(command)
+    })
+
+    socket.on("user-send-post", (command) => {
+        controlAction.userSendPost(command)
     })
 })

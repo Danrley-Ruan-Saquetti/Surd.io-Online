@@ -5,8 +5,18 @@ export default function StateServer() {
         servers[command.code] = command
     }
 
+    const addPlayer = (command) => {
+        servers[command.serverCode].playersConnected++
+    }
+
+    const removePlayer = (command) => {
+        servers[command.serverCode].playersConnected--
+    }
+
     return {
         servers,
         createServer,
+        addPlayer,
+        removePlayer,
     }
 }

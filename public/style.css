@@ -30,6 +30,9 @@ select {
     border: none;
     background: none;
 }
+option {
+    display: flex;
+}
 textarea {
     resize: none;
 }
@@ -183,7 +186,7 @@ textarea {
 
 #menu {
     height: min-content;
-    min-width: 26.5rem;
+    min-width: 37rem;
 }
 #name-tag,
 #list-servers {
@@ -242,9 +245,6 @@ textarea {
 
 /* RENDERER-GAME - CANVAS */
 
-#canvas {
-    background-color: #fff;
-}
 
 /* RENDERER-GAME - CHAT */
 
@@ -291,13 +291,13 @@ textarea {
     height: auto;
     max-height: 35rem;
     margin-right: 5.5rem;
-    box-shadow: inset 0 0 1rem rgba(0, 0, 0, .2);
 }
 .preview-posts {
     padding: 1rem;
     background-color: #fff;
     border-radius: .3rem;
     margin-top: 1rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, .2);
 }
 #content-posts p {
     display: flex;

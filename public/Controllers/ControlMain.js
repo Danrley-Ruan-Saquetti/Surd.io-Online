@@ -37,6 +37,9 @@ export default function ControlMain() {
         Object.keys(command.games).map((i) => {
             createGame(command.games[i])
         })
+        Object.keys(command.players).map((i) => {
+            createPlayer(command.players[i])
+        })
     }
 
     // User
@@ -53,25 +56,14 @@ export default function ControlMain() {
 
     const removeUser = (command) => {
         notifyAll("user-disconnected", command)
+        if (controlUser.getUsers()[command.code].playingGame) { removePlayer({ serverCode: controlUser.getUsers()[command.code].serverConnected }) }
+
         controlUser.removeUser(command)
-        controlGame.removePlayer(command)
     }
 
     const renameUser = (command) => {
         notifyAll("user-rename", command)
         controlUser.renameUser(command)
-    }
-
-    const userStartGame = (command) => {
-        notifyAll("user-start-game", command)
-        controlUser.userStartGame(command)
-        controlGame.createPlayer(controlUser.getUsers()[command.code])
-    }
-
-    const userQuitGame = (command) => {
-        notifyAll("user-quit-game", command)
-        controlUser.userQuitGame(command)
-        controlGame.removePlayer(command)
     }
 
     const getContUsers = () => {
@@ -82,6 +74,14 @@ export default function ControlMain() {
     const createServer = (command) => {
         const server = controlServer.createServer(command)
         return { code: server.code }
+    }
+
+    const addPlayerServer = (command) => {
+        controlServer.addPlayer(command)
+    }
+
+    const removePlayerServer = (command) => {
+        controlServer.removePlayer(command)
     }
 
     // Chat
@@ -113,12 +113,41 @@ export default function ControlMain() {
         controlGame.createGame(command)
     }
 
+    const createPlayer = (command) => {
+        const player = controlGame.createPlayer(command)
+        addPlayerServer(command)
+
+        return player
+    }
+
+    const removePlayer = (command) => {
+        controlGame.removePlayer(command)
+        removePlayerServer(command)
+    }
+
+    const userStartGame = (command) => {
+        controlUser.userStartGame(command)
+        const player = createPlayer(command)
+
+        notifyAll("user-start-game", player)
+    }
+
+    const userQuitGame = (command) => {
+        notifyAll("user-quit-game", command)
+        controlUser.userQuitGame(command)
+
+        removePlayer(command)
+    }
+
+
     const acceptKey = (command) => {
         controlGame.acceptKey(command)
     }
 
-    const getStateGame = (command) => {
+    // State
+    const getStateGame = () => {
         return {
+            map: controlGame.MAP,
             players: controlGame.getPlayers()
         }
     }
@@ -141,11 +170,11 @@ export default function ControlMain() {
         removeUser,
         renameUser,
         getContUsers,
-        userStartGame,
-        userQuitGame,
         createServer,
         createChat,
         createGame,
+        userStartGame,
+        userQuitGame,
         acceptKey,
         createPost,
         getPostsChat,

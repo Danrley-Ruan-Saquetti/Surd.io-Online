@@ -6,25 +6,28 @@ export default function ControlPlayer() {
 
     const DIMENSION_PLAYER = 40
 
-    const createPlayer = (command, state) => {
+    const createPlayer = (command, map) => {
         const code = command.code ? command.code : GeneratedCode(controlStatePlayer.players).code
         const player = {
             code: code,
-            nickGame: command.name,
-            level: 1,
-            xp: 0,
-            points: 0,
-            health: 100,
-            maxHealth: 100,
+            serverCode: command.serverConnected ? command.serverConnected : command.serverCode ? command.serverCode : null,
+            name: command.name,
+            level: command.level ? command.level : 1,
+            xp: command.xp ? command.xp : 0,
+            points: command.points ? command.points : 0,
+            health: command.health ? command.health : 100,
+            maxHealth: command.maxHealth ? command.maxHealth : 100,
             dimension: { width: DIMENSION_PLAYER, height: DIMENSION_PLAYER },
-            position: { x: Math.random() * (state.width - DIMENSION_PLAYER), y: Math.random() * (state.height - DIMENSION_PLAYER) },
+            position: command.position ? command.position : { x: Math.random() * (map.dimension.width - DIMENSION_PLAYER) + DIMENSION_PLAYER, y: Math.random() * (map.dimension.height - DIMENSION_PLAYER) + DIMENSION_PLAYER }, // { x: (map.dimension.width / 2) + Math.round() * 100, y: (map.dimension.height / 2) + Math.round() * 100 }, 
             speed: { x: 0, y: 0 },
-            maxSpeed: 3,
+            maxSpeed: command.maxSpeed ? command.maxSpeed : 3,
             key: { UP: false, DOWN: false, RIGHT: false, LEFT: false },
             lastKey: { vertical: "", horizontal: "" }
         }
 
         controlStatePlayer.createPlayer(player)
+
+        return player
     }
 
     const removePlayer = (command) => {
